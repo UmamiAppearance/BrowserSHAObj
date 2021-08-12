@@ -44,23 +44,35 @@ class SHAHashObj {
     }
 
     async makeHashArray(message) {
+        /*
+            Digests the given message and stores an array from the hash buffer.
+        */
         const msgArray = (this.utf8Input) ? new TextEncoder().encode(message) : message;        // encode as (utf-8) Uint8Array (if not disabled)
         const hashBuffer = await window.crypto.subtle.digest(this.algorithm, msgArray);         // hash the message
         this.hashArray.array = Array.from(new Uint8Array(hashBuffer));                          // convert buffer to byte array
-        console.log("array", this.hashArray.array);
     }
 
     mapArray(radix) {
+        /*
+            Returns the string representation of the given radix.
+        */
         if (!this.hashArray.array) throw new Error("No message to digest.");
         return this.hashArray.array.map(b => b.toString(radix).padStart(2, '0')).join('');
     }
 
     mapToBase64() {
+        /*
+            Returns a base64 string represention of the hash array.
+        */
         if (!this.hashArray.array) throw new Error("No message to digest.");
         return window.btoa(this.hashArray.array.map(b => String.fromCharCode(b)).join(''));
     }
 
     addConversions() {
+        /*
+            Appends methods for getting common representations
+            of the hash array to the returned object.
+        */
         this.hashArray.toBase = (radix) => this.mapArray(radix);
         this.hashArray.toBin = () => this.mapArray(2);
         this.hashArray.toOct = () => this.mapArray(8);
