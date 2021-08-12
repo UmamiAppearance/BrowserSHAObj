@@ -32,7 +32,7 @@ The message can be updated with ``obj.update(message)``
 
 There are multiple functions available to show a representation of the hash. They all (with one exception) return a string of a different kind (binary, hexadecimal, base36...). Those functions are called like this: ``obj.toRepresentation()``  
 
-Available fuctions are:
+Available functions are:
 * ``toBin()``
 * ``toOct()``
 * ``toDec()``
