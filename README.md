@@ -63,7 +63,7 @@ ___Updating the message:___
 await sha256obj.update("digest me!");
 ```
 
-___Get represantations:___
+___Get representations:___
 ```js
 // hexadecimal
 sha256obj.toHex();
