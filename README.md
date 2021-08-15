@@ -12,16 +12,16 @@ Three arguments are taken by the constructor:
 * ``algorithm``
 * ``utf8Input``
 
-The message is set to ``null`` by default. If it is not overwritten the created object does not hold a digested array of the input. This has the advantage, that any new input can be called asynchronously and awaited for.
+The ``message`` is set to ``null`` by default. If it is not overwritten the created object does not hold a digested array of the input. This has the advantage, that any new input can be called asynchronously and awaited for.
 
-The _algorithm_ is set to __SHA-256__ by default. This can be changed to:
+The ``algorithm`` is set to ``SHA-256`` by default. This can be changed to:
 * ``SHA-1``
 * ``SHA-256``
 * ``SHA-384``
 * ``SHA-512``
 
 
-Also by default all input is converted into a __Uin8Array__ before digestion. This can be disabled (by setting _utf8Input_ to _false_). In this case other ArrayBuffers can be used as input.
+Also by default all input is converted into a _Uin8Array_ before digestion. This can be disabled (by setting ``utf8Input`` to ``false``). In this case other ArrayBuffers can be used as input.
 ___
 
 ## Returned object
