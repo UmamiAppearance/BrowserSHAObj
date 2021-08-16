@@ -10,16 +10,15 @@ class SHAHashObj {
             * utf8Input
         
         The message is set to "null" by default. If it is not
-        overwritten the created object does not hold a digested
+        overwritten the created object does not hold the processed
         array of the input. This has the advantage, that any new
         input can be called asynchronously and awaited for.
 
         The algorithm is set to SHA-256 by default.
 
-        Also by default all input is converted into a Uin8Array
-        before digestion. This can be disabled (by setting
-        "utf8Input" to false). In this case other ArrayBuffers
-        can be used as input.
+        Also by default all input is converted into a Uin8Array.
+        This can be disabled (by setting "utf8Input" to false).
+        In this case other ArrayBuffers can be used as input.
     */
 
     constructor(message=null, algorithm="SHA-256", utf8Input=true) {
