@@ -77,9 +77,11 @@ class SHAHashObj {
         this.hashArray.toOct = () => this.mapArray(8);
         this.hashArray.toDec = () => this.mapArray(10);
         this.hashArray.toHex = () => this.mapArray(16);
-        this.hashArray.toBase36 = () => this.mapArray(36).toUpperCase();
+        this.hashArray.toBase32 = () => this.mapArray(32).toUpperCase();
         this.hashArray.toBase64 = () => this.mapToBase64();
         this.hashArray.toInt = () => parseInt(this.mapArray(10), 10);
     }
 }
 
+// If you like to use this class as a module uncomment the following line
+// export default SHAHashObj

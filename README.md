@@ -12,7 +12,7 @@ Three arguments are taken by the constructor:
 * ``algorithm``
 * ``utf8Input``
 
-The ``message`` is set to ``null`` by default. If it is not overwritten the created object does not hold a digested array of the input. This has the advantage, that any new input can be called asynchronously and awaited for.
+The ``message`` is set to ``null`` by default. If it is not overwritten the created object does not hold a digested array of the input. This has the advantage, that any new input can be called asynchronously and ``await``ed for.
 
 The ``algorithm`` is set to ``SHA-256`` by default. This can be changed to:
 * ``SHA-1``
