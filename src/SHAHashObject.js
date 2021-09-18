@@ -1,3 +1,25 @@
+// esm-moldule import (disabled for default js)
+//import {Base16, Base32, Base64, Base85, Base91} from "../lib/BaseEx.esm.min.js"
+
+// loading classic script tag if not present
+function importBaseEx() {
+    function appendToHead() {
+        console.log("classic");
+        const script = document.createElement("script");
+        script.src = "lib/BaseEx.min.js";
+        document.querySelector("head").appendChild(script);
+    }
+    if (typeof Base16 === "undefined") {
+        window.Base16 = null;
+        window.Base32 = null;
+        window.Base64 = null;
+        window.Base85 = null;
+        window.Base91 = null;
+        appendToHead();
+    }
+}
+importBaseEx();
+
 class SHAHashObj {
     /*
         Creates a SHA-(1-512) object, that holds an array
@@ -16,7 +38,7 @@ class SHAHashObj {
 
         The algorithm is set to SHA-256 by default.
 
-        Also by default all input is converted into a Uin8Array.
+        Also by default all input is converted into a Uint8Array.
         This can be disabled (by setting "utf8Input" to false).
         In this case other ArrayBuffers can be used as input.
     */
@@ -35,7 +57,7 @@ class SHAHashObj {
         this.hashArray.array = null;
         this.hashArray.update = this.makeHashArray.bind(this);
 
-        this.addConversions();
+        this.addConverters();
 
         if (message !== null) this.makeHashArray(message);
 
@@ -51,27 +73,15 @@ class SHAHashObj {
         this.hashArray.array = Array.from(new Uint8Array(hashBuffer));                          // convert buffer to byte array
     }
 
-    mapArray(radix) {
-        /*
-            Returns the string representation of the given radix.
-        */
-        if (!this.hashArray.array) throw new Error("No message to digest.");
-        return this.hashArray.array.map(b => b.toString(radix).padStart(2, '0')).join('');
-    }
-
-    mapToBase64() {
-        /*
-            Returns a base64 string represention of the hash array.
-        */
-        if (!this.hashArray.array) throw new Error("No message to digest.");
-        return window.btoa(this.hashArray.array.map(b => String.fromCharCode(b)).join(''));
-    }
-
-    addConversions() {
+    async addConverters() {
         /*
             Appends methods for getting common representations
             of the hash array to the returned object.
         */
+
+        await importBaseEx();
+        console.log(Base16);
+        /*
         this.hashArray.toBase = (radix) => this.mapArray(radix);
         this.hashArray.toBin = () => this.mapArray(2);
         this.hashArray.toOct = () => this.mapArray(8);
@@ -80,6 +90,7 @@ class SHAHashObj {
         this.hashArray.toBase32 = () => this.mapArray(32).toUpperCase();
         this.hashArray.toBase64 = () => this.mapToBase64();
         this.hashArray.toInt = () => parseInt(this.mapArray(10), 10);
+        */
     }
 }
 
