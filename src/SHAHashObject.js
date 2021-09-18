@@ -1,22 +1,12 @@
 // esm-moldule import (disabled for default js)
-//import {Base16, Base32, Base64, Base85, Base91} from "../lib/BaseEx.esm.min.js"
+//import {BaseEx} from "../lib/BaseEx.esm.min.js"
 
-// loading classic script tag if not present
+
+// loading classic script tag if not present (deactivated for esm-module)
 function importBaseEx() {
-    function appendToHead() {
-        console.log("classic");
-        const script = document.createElement("script");
-        script.src = "lib/BaseEx.min.js";
-        document.querySelector("head").appendChild(script);
-    }
-    if (typeof Base16 === "undefined") {
-        window.Base16 = null;
-        window.Base32 = null;
-        window.Base64 = null;
-        window.Base85 = null;
-        window.Base91 = null;
-        appendToHead();
-    }
+    const script = document.createElement("script");
+    script.src = "lib/BaseEx.min.js";
+    document.querySelector("head").appendChild(script);
 }
 importBaseEx();
 
@@ -53,15 +43,13 @@ class SHAHashObj {
         this.algorithm = algorithm;
         this.utf8Input = utf8Input;
 
-        this.hashArray = {};
-        this.hashArray.array = null;
-        this.hashArray.update = this.makeHashArray.bind(this);
-
-        this.addConverters();
+        this.hash = {};
+        this.hash.array = null;
+        this.hash.update = this.makeHashArray.bind(this);
 
         if (message !== null) this.makeHashArray(message);
 
-        return this.hashArray;
+        return this.hash;
     }
 
     async makeHashArray(message) {
@@ -70,7 +58,8 @@ class SHAHashObj {
         */
         const msgArray = (this.utf8Input) ? new TextEncoder().encode(message) : message;        // encode as (utf-8) Uint8Array (if not disabled)
         const hashBuffer = await window.crypto.subtle.digest(this.algorithm, msgArray);         // hash the message
-        this.hashArray.array = Array.from(new Uint8Array(hashBuffer));                          // convert buffer to byte array
+        this.hash.array = new Uint8Array(hashBuffer);                                           // convert buffer to byte array
+        this.addConverters();
     }
 
     async addConverters() {
@@ -78,21 +67,25 @@ class SHAHashObj {
             Appends methods for getting common representations
             of the hash array to the returned object.
         */
-
-        await importBaseEx();
-        console.log(Base16);
-        /*
-        this.hashArray.toBase = (radix) => this.mapArray(radix);
-        this.hashArray.toBin = () => this.mapArray(2);
-        this.hashArray.toOct = () => this.mapArray(8);
-        this.hashArray.toDec = () => this.mapArray(10);
-        this.hashArray.toHex = () => this.mapArray(16);
-        this.hashArray.toBase32 = () => this.mapArray(32).toUpperCase();
-        this.hashArray.toBase64 = () => this.mapToBase64();
-        this.hashArray.toInt = () => parseInt(this.mapArray(10), 10);
-        */
+        if (this.hash.hasConverters) return;
+        
+        const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
+        
+        if (typeof(BaseEx) === "undefined") {
+            throw new Error("Library 'BaseEx' has not yet loaded.\nMake sure that this is the case. (e.g. initializing SHAHashOj via a load EventListener");
+        }
+        
+        const baseEx = new BaseEx("bytes");
+        const converters = Object.keys(baseEx).slice(1); 
+        
+        this.hash.toHex = () => baseEx.base16.encode(this.hash.array);
+        
+        for (const converter of converters) {
+            this.hash[`to${capitalize(converter)}`] = () => baseEx[converter].encode(this.hash.array);
+        }
+        this.hash.hasConverters = true;
     }
 }
 
-// If you like to use this class as a module uncomment the following line
-// export default SHAHashObj
+x = new SHAHashObj();
+x.update("test");
