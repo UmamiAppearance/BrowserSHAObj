@@ -1,14 +1,15 @@
 // esm-moldule import (disabled for default js)
-//import {BaseEx} from "../lib/BaseEx.esm.min.js"
-
+import {BaseEx} from "../lib/BaseEx.esm.min.js"
 
 // loading classic script tag if not present (deactivated for esm-module)
+/*
 function importBaseEx() {
     const script = document.createElement("script");
     script.src = "lib/BaseEx.min.js";
     document.querySelector("head").appendChild(script);
 }
 importBaseEx();
+*/
 
 class SHAHashObj {
     /*
@@ -96,3 +97,18 @@ class SHAHashObj {
         return input;
     }
 }
+
+function fileToBytes() {
+    const reader = new FileReader();
+    reader.onload = function() {
+  
+        const arrayBuffer = this.result;
+        console.log(new Uint8Array(arrayBuffer));
+  
+    }
+    reader.readAsArrayBuffer(this.files[0]);
+  
+}
+
+export default SHAHashObj;
+export {fileToBytes};

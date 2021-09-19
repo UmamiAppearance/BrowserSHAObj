@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Demo Page</title>
-    <script src="src/SHAHashObject.js"></script>
+    <script type="module">
+        import SHAHashObj, {fileToBytes} from "./src/SHAHashObject.js";
+        const x = new SHAHashObj();
+        await x.update("Hello World!");
+        console.log(x.toHex());
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector("#file-input").addEventListener("change", fileToBytes, false);
+        }, false);
+    </script>
 </head>
 <body>
-    
+    <input type="file" id="file-input">
 </body>
 </html>
