@@ -14,14 +14,13 @@ class SHAHashObj {
     /*
         Creates a SHA-(1-512) object, that holds an array
         of the output for the given algorithm. Multiple
-        representations of the message-digest are available.
+        representations of the input-digest are available.
         
         Three arguments are taken by the constructor.
-            * message
+            * input
             * algorithm
-            * utf8Input
         
-        The message is set to "null" by default. If it is not
+        The input is set to "null" by default. If it is not
         overwritten the created object does not hold the processed
         array of the input. This has the advantage, that any new
         input can be called asynchronously and awaited for.
@@ -33,7 +32,7 @@ class SHAHashObj {
         In this case other ArrayBuffers can be used as input.
     */
 
-    constructor(message=null, algorithm="SHA-256", utf8Input=true) {
+    constructor(input=null, algorithm="SHA-256") {
         const algorithms = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"];
         algorithm = `SHA-${String(algorithm).match(/[0-9]+/)[0]}`;                      // simplify the input for the user - sha1, Sha-256... everything is fine, even 384 by itself, as long as the numbers match to the provided algorithms
         if (!algorithms.includes(algorithm)) {
@@ -41,24 +40,26 @@ class SHAHashObj {
         }
 
         this.algorithm = algorithm;
-        this.utf8Input = utf8Input;
 
         this.hash = {};
         this.hash.array = null;
         this.hash.update = this.makeHashArray.bind(this);
 
-        if (message !== null) this.makeHashArray(message);
+        if (input !== null) this.makeHashArray(input);
 
         return this.hash;
     }
 
-    async makeHashArray(message) {
+    async makeHashArray(input) {
         /*
-            Digests the given message and stores an array from the hash buffer.
+            Digests the given input and stores an array from the hash buffer.
         */
-        const msgArray = (this.utf8Input) ? new TextEncoder().encode(message) : message;        // encode as (utf-8) Uint8Array (if not disabled)
-        const hashBuffer = await window.crypto.subtle.digest(this.algorithm, msgArray);         // hash the message
-        this.hash.array = new Uint8Array(hashBuffer);                                           // convert buffer to byte array
+        input = this.testInput(input);
+
+        // hash the input
+        const hashBuffer = await window.crypto.subtle.digest(this.algorithm, input);
+        
+        this.hash.array = new Uint8Array(hashBuffer);
         this.addConverters();
     }
 
@@ -68,12 +69,12 @@ class SHAHashObj {
             of the hash array to the returned object.
         */
         if (this.hash.hasConverters) return;
-        
-        const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
-        
+                
         if (typeof(BaseEx) === "undefined") {
-            throw new Error("Library 'BaseEx' has not yet loaded.\nMake sure that this is the case. (e.g. initializing SHAHashOj via a load EventListener");
+            throw new Error("Library 'BaseEx' has not yet loaded.\nMake sure that this is the case. (e.g. initializing SHAHashObj via a load EventListener");
         }
+
+        const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
         
         const baseEx = new BaseEx("bytes");
         const converters = Object.keys(baseEx).slice(1); 
@@ -85,7 +86,13 @@ class SHAHashObj {
         }
         this.hash.hasConverters = true;
     }
-}
 
-x = new SHAHashObj();
-x.update("test");
+    testInput(input) {
+        if (typeof(input) === "string") {
+            input = new TextEncoder().encode(input);
+        } else if (!(input instanceof ArrayBuffer || ArrayBuffer.isView(input))) {
+            throw new TypeError("Input must be of type String, ArrayBuffer or ArrayBufferView (typed array)");
+        }
+        return input;
+    }
+}
