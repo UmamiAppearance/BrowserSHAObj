@@ -31,6 +31,14 @@
                 txtInputDisabled: false,
             };
 
+            // Provide some functions to convert bytes
+            const byteConverter = {
+                bytes: input => new TextEncoder().encode(input).join(" "),
+                str: input => new TextDecoder().decode(new Uint8Array(input.split(" "))),
+                toStrBytes: input => input.join(" "),
+                toUint: input => new Uint8Array(input.split(" ")),
+            }
+
             // generate an object, that holds instances of all available hashers
             const hashers = new Object();
             for (const sha of Data.dataTypes.algorithm) {
@@ -51,19 +59,31 @@
                             return this.curTypes.input;
                         },
                         set: function(val) {
-                            const formerVal = this.curTypes;
+                            let formerType = this.curTypes.input;
+                            let input = this.input;
+
                             if (val === "file") {
                                 this.txtInputDisabled = true;
-                                nonFileInput = [this.input, this.curTypes.input];
+
+                                // store old input and type if type goes back to str/bytes
+                                nonFileInput = [input, formerType];
                             } else {
-                                if (formerVal === "file") {
-                                    let input, formerType;
-                                    [input, formerType] = nonFileInput;
-                                    // TODO: do it
-                                }
-                                if (val === "bytes")
                                 this.txtInputDisabled = false;
+                                
+                                // load old input if type switches back to str/bytes
+                                if (formerType === "file") {
+                                    [input, formerType] = nonFileInput;
+                                }
+                                
+                                // convert from bytes to str and vice versa
+                                if (val === "bytes" && formerType === "str") {
+                                    this.input = byteConverter.bytes(input);
+                                } else if (val === "str" && formerType === "bytes") {
+                                    this.input = byteConverter.str(input);
+                                }
                             }
+
+                            // set the new selected value
                             this.curTypes.input = val;
                         },
                     },
@@ -79,6 +99,9 @@
                         }
                     },
                 },
+                methods: {
+                    test: () => alert("Hiho"),
+                }
             });
 
             /*
@@ -146,7 +169,7 @@
                                 </select>
                             </p>
                             <p>
-                                <textarea v-model="input" :disabled="txtInputDisabled" id="text-input" cols="48" rows="6" spellcheck="false" placeholder="enter string here..."></textarea>
+                                <textarea @input="test" v-model="input" :disabled="txtInputDisabled" id="text-input" cols="48" rows="6" spellcheck="false" placeholder="enter string here..."></textarea>
                                 <input :disabled="!txtInputDisabled" type="file" id="file-input">
                             </p>
                             <p>
