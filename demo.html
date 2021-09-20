@@ -16,6 +16,7 @@
             import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js"
 
             // Data object (source of truth) for Vue
+            let nonFileInput;
             const Data = {
                 input: "Hello World!",
                 hashsum: null,
@@ -27,12 +28,13 @@
                     input: ["str", "bytes", "file"],
                     algorithm: SHAHashObj.getAlgorithms(),
                 },
+                txtInputDisabled: false,
             };
 
             // generate an object, that holds instances of all available hashers
             const hashers = new Object();
             for (const sha of Data.dataTypes.algorithm) {
-                hashers[sha] = new SHAHashObj(sha);
+                hashers[sha] = new SHAHashObj(null, sha);
             }
 
             // generate the hashsum for initial settings
@@ -46,17 +48,39 @@
                 computed: {
                     inputType: {
                         get: function() {
-                            console.log(this.curTypes.input);
                             return this.curTypes.input;
                         },
                         set: function(val) {
+                            const formerVal = this.curTypes;
+                            if (val === "file") {
+                                this.txtInputDisabled = true;
+                                nonFileInput = [this.input, this.curTypes.input];
+                            } else {
+                                if (formerVal === "file") {
+                                    let input, formerType;
+                                    [input, formerType] = nonFileInput;
+                                    // TODO: do it
+                                }
+                                if (val === "bytes")
+                                this.txtInputDisabled = false;
+                            }
                             this.curTypes.input = val;
                         },
                     },
-                    algorithm: () => "SHA-256",
+                    algorithm: {
+                        get: function() {
+                            return this.curTypes.algorithm;
+                        },
+                        set: function(val) {
+                            this.curTypes.algorithm = val;
+                            hashers[val].update(this.input).then(() => 
+                                this.hashsum = hashers[val].toHex()
+                            );
+                        }
+                    },
                 },
             });
-            
+
             /*
             document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector("#file-input").addEventListener("change", fileToBytes, false);
@@ -84,6 +108,12 @@
             }
             label {
                 margin: 0;
+            }
+            *:disabled {
+                visibility: hidden;
+                height: 0;
+                margin: 0;
+                padding: 0 unset;
             }
         </style>
     </head>
@@ -116,8 +146,8 @@
                                 </select>
                             </p>
                             <p>
-                                <textarea id="text-input" cols="48" rows="6" spellcheck="false" placeholder="enter string here..."></textarea>
-                                <input type="file" id="file-input">
+                                <textarea v-model="input" :disabled="txtInputDisabled" id="text-input" cols="48" rows="6" spellcheck="false" placeholder="enter string here..."></textarea>
+                                <input :disabled="!txtInputDisabled" type="file" id="file-input">
                             </p>
                             <p>
                                 <label for="algorithm">algorithm</label>
