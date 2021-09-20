@@ -40,12 +40,28 @@
                 () => Data.hashsum = hashers[Data.curTypes.algorithm].toHex()
             );
             
-
+            new Vue({ 
+                el: "#calculator",
+                data: Data,
+                computed: {
+                    inputType: {
+                        get: function() {
+                            console.log(this.curTypes.input);
+                            return this.curTypes.input;
+                        },
+                        set: function(val) {
+                            this.curTypes.input = val;
+                        },
+                    },
+                    algorithm: () => "SHA-256",
+                },
+            });
             
-
+            /*
             document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector("#file-input").addEventListener("change", fileToBytes, false);
             }, false);
+            */
         </script>
         <style>
             article > div {
@@ -92,13 +108,11 @@
                 <article>
                     <h3>Calculator</h3>
                     <div>
-                        <form>
+                        <form id="calculator">
                             <p>
                                 <label for="input-type">input type</label>
-                                <select id="input-type" v-model="">
-                                    <option>string</option>
-                                    <option>bytes</option>
-                                    <option>file</option>
+                                <select id="input-type" v-model="inputType">
+                                    <option v-for="option in dataTypes.input">{{ option }}</option>
                                 </select>
                             </p>
                             <p>
@@ -107,10 +121,10 @@
                             </p>
                             <p>
                                 <label for="algorithm">algorithm</label>
-                                <select id="algorithm">
-                                    <option>SHA-256</option>
+                                <select id="algorithm" v-model="algorithm">
+                                    <option v-for="option in dataTypes.algorithm">{{ option }}</option>
                                 </select>
-                                <input id="hashsum" type="text" v-model="message" readonly="true" placeholder="SHAsum (hex)" spellcheck="false">
+                                <input id="hashsum" type="text" v-model="hashsum" readonly="true" placeholder="SHAsum (hex)" spellcheck="false">
                             </p>
                         </form>
                     </div>
