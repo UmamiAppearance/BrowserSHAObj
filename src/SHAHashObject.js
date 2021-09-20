@@ -102,17 +102,4 @@ class SHAHashObj {
     }
 }
 
-function fileToBytes() {
-    const reader = new FileReader();
-    reader.onload = function() {
-  
-        const arrayBuffer = this.result;
-        console.log(new Uint8Array(arrayBuffer));
-  
-    }
-    reader.readAsArrayBuffer(this.files[0]);
-  
-}
-
 export default SHAHashObj;
-export {fileToBytes};
