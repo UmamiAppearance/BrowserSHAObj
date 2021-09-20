@@ -14,26 +14,34 @@
             import SHAHashObj, {fileToBytes} from "./src/SHAHashObject.js";
             //import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.min.js"
             import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js"
-            
-            const hasher = new SHAHashObj();
 
             // Data object (source of truth) for Vue
             const Data = {
                 input: "Hello World!",
-                output: null,
+                hashsum: null,
                 curTypes: { 
-                    encode: "str",
-                    decode: "base64",
+                    input: "str",
+                    algorithm: "SHA-256",
                 },
                 dataTypes: {
                     input: ["str", "bytes", "file"],
                     algorithm: SHAHashObj.getAlgorithms(),
                 },
             };
+
+            // generate an object, that holds instances of all available hashers
+            const hashers = new Object();
+            for (const sha of Data.dataTypes.algorithm) {
+                hashers[sha] = new SHAHashObj(sha);
+            }
+
+            // generate the hashsum for initial settings
+            hashers[Data.curTypes.algorithm].update(Data.input).then(
+                () => Data.hashsum = hashers[Data.curTypes.algorithm].toHex()
+            );
             
 
-
-            console.log(Data);
+            
 
             document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector("#file-input").addEventListener("change", fileToBytes, false);
@@ -81,7 +89,7 @@
     <!-- Input section -->
 
             <section>
-                <article id="input">
+                <article>
                     <h3>Calculator</h3>
                     <div>
                         <form>
