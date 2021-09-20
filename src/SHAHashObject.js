@@ -34,7 +34,7 @@ class SHAHashObj {
     */
 
     constructor(input=null, algorithm="SHA-256") {
-        const algorithms = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"];
+        const algorithms = this.constructor.getAlgorithms();
         algorithm = `SHA-${String(algorithm).match(/[0-9]+/)[0]}`;                      // simplify the input for the user - sha1, Sha-256... everything is fine, even 384 by itself, as long as the numbers match to the provided algorithms
         if (!algorithms.includes(algorithm)) {
             throw new Error(`Ivalid algorithm.\nValid arguments are: "${algorithms.join(", ")}".`);
@@ -49,6 +49,10 @@ class SHAHashObj {
         if (input !== null) this.makeHashArray(input);
 
         return this.hash;
+    }
+
+    static getAlgorithms() {
+        return ["SHA-1", "SHA-256", "SHA-384", "SHA-512"];
     }
 
     async makeHashArray(input) {

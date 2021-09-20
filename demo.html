@@ -1,21 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Demo Page</title>
-    <script type="module">
-        import SHAHashObj, {fileToBytes} from "./src/SHAHashObject.js";
-        const x = new SHAHashObj();
-        await x.update("Hello World!");
-        console.log(x.toHex());
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="#">
+        
+        <link href="https://umamiappearance.github.io/MSG/MSG.css" rel="stylesheet">
 
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelector("#file-input").addEventListener("change", fileToBytes, false);
-        }, false);
-    </script>
-</head>
-<body>
-    <input type="file" id="file-input">
-</body>
+
+        <title>SHAHashObj Demo Page (Online SHAsum Calculator)</title>
+
+        <script type="module">
+            import SHAHashObj, {fileToBytes} from "./src/SHAHashObject.js";
+            //import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.min.js"
+            import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js"
+            
+            const hasher = new SHAHashObj();
+
+            // Data object (source of truth) for Vue
+            const Data = {
+                input: "Hello World!",
+                output: null,
+                curTypes: { 
+                    encode: "str",
+                    decode: "base64",
+                },
+                dataTypes: {
+                    input: ["str", "bytes", "file"],
+                    algorithm: SHAHashObj.getAlgorithms(),
+                },
+            };
+            
+
+
+            console.log(Data);
+
+            document.addEventListener("DOMContentLoaded", () => {
+                document.querySelector("#file-input").addEventListener("change", fileToBytes, false);
+            }, false);
+        </script>
+        <style>
+            article > div {
+                background-color: aliceblue;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+                padding: 10px;
+                width: min-content;
+            }
+            h3 {
+                margin-bottom: 3px;
+            }
+            textarea {
+                resize: none;
+            }
+            input#hashsum {
+                padding: 10px;
+                width: calc(100% - 20px);
+                margin-top: 8px;
+                border-radius: 0;
+            }
+            label {
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <section>
+
+                <!-- Head of body -->
+            
+                <article>
+                    <h1>SHAHashObj Demo Page (Online SHAsum Calculator)</h1>
+                    <p>
+                        
+                    </p>
+                </article>
+
+            </section>
+
+    <!-- Input section -->
+
+            <section>
+                <article id="input">
+                    <h3>Calculator</h3>
+                    <div>
+                        <form>
+                            <p>
+                                <label for="input-type">input type</label>
+                                <select id="input-type" v-model="">
+                                    <option>string</option>
+                                    <option>bytes</option>
+                                    <option>file</option>
+                                </select>
+                            </p>
+                            <p>
+                                <textarea id="text-input" cols="48" rows="6" spellcheck="false" placeholder="enter string here..."></textarea>
+                                <input type="file" id="file-input">
+                            </p>
+                            <p>
+                                <label for="algorithm">algorithm</label>
+                                <select id="algorithm">
+                                    <option>SHA-256</option>
+                                </select>
+                                <input id="hashsum" type="text" v-model="message" readonly="true" placeholder="SHAsum (hex)" spellcheck="false">
+                            </p>
+                        </form>
+                    </div>
+                </article>
+            </section>
+
+                        
+        </main>
+    </body>
 </html>
