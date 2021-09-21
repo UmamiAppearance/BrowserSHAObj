@@ -52,6 +52,9 @@ class SHAHashObj {
     }
 
     static getAlgorithms() {
+        /*
+            return available algorithms
+        */
         return ["SHA-1", "SHA-256", "SHA-384", "SHA-512"];
     }
 
@@ -93,6 +96,10 @@ class SHAHashObj {
     }
 
     testInput(input) {
+        /*
+            Converts strings to bytes, rejects anything
+            else but ArrayBuffer and typed Array.
+        */
         if (typeof(input) === "string") {
             input = new TextEncoder().encode(input);
         } else if (!(input instanceof ArrayBuffer || ArrayBuffer.isView(input))) {
@@ -102,4 +109,5 @@ class SHAHashObj {
     }
 }
 
+// esm export (disabled for default js)
 export default SHAHashObj;
