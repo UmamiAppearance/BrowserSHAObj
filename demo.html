@@ -37,7 +37,6 @@
             const byteConverter = {
                 bytes: input => new TextEncoder().encode(input).join(" "),
                 str: input => new TextDecoder().decode(new Uint8Array(input.split(" "))),
-                toStrBytes: input => input.join(" "),
                 toUint: input => new Uint8Array(input.split(" ")),
             }
 
@@ -51,7 +50,9 @@
             hashers[Data.curTypes.algorithm].update(Data.input).then(
                 () => Data.hashsum = hashers[Data.curTypes.algorithm].toHex()
             );
+
             
+// vue definitions
             new Vue({ 
                 el: "#calculator",
                 data: Data,
@@ -91,6 +92,7 @@
                             // set the new selected value
                             this.curTypes.input = val;
 
+                            // update hashsum (in most cases)
                             if (forceUpdate) this.updateShasum();
                         },
                     },
@@ -132,8 +134,7 @@
                         reader.addEventListener("load", function() {
                             hashers[Data.curTypes.algorithm].update(this.result).then(() => {
                                 Data.hashsum = hashers[Data.curTypes.algorithm].toHex();
-                                Data.calculating = false;
-                                
+                                Data.calculating = false;    
                             });
                         }, false);
                         
@@ -150,6 +151,9 @@
                 }
             });
         </script>
+    
+
+<!-- stylesheet -->
         <style>
             main {
                 min-height: calc(100vh - 40px);
@@ -266,6 +270,8 @@
             }
         </style>
     </head>
+
+<!-- html -->
     <body>
         <main>
             <section>
@@ -313,10 +319,14 @@
                     </div>
                 </article>
             </section>
+
+    <!-- clipboard info -->
             <section id="copied">
                 <article>copied to clipboard</article>
             </section>      
         </main>
+
+    <!-- footer -->
         <footer>
             <a href="https://github.com/UmamiAppearance/SHAHashObjectJS" style="text-decoration: none;" title="to repository">
                 <span style="text-decoration: underline;">github.com/UmamiAppearance/SHAHashObjectJS</span>
