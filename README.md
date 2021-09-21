@@ -1,17 +1,16 @@
 # SHAHashObj
 
 ## Description
-__SHAHashObj__ creates a SHA-(1-512) object, that holds an array of the output for the given algorithm.
-Multiple representations of the message-digest are available (e.g. binary, hexadecimal, base64... [-> learn more](#Returned-object)).
+__SHAHashObj__ creates a SHA-(1-512) object, that holds a typed array of the output for the given algorithm.
+With the use of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the hashsum can be exported to multible data representations.  [-> learn more](#Returned-object))
 ___
 
 ## Constructor
         
-Three arguments are taken by the constructor:
+Two arguments are taken by the constructor:
 * ``message``
 * ``algorithm``
-* ``utf8Input``
-
+* 
 The ``message`` is set to ``null`` by default. If it is not overwritten the created object does not hold a digested array of the input. This has the advantage, that any new input can be called asynchronously and ``await``ed for.
 
 The ``algorithm`` is set to ``SHA-256`` by default. This can be changed to:
@@ -19,9 +18,6 @@ The ``algorithm`` is set to ``SHA-256`` by default. This can be changed to:
 * ``SHA-256``
 * ``SHA-384``
 * ``SHA-512``
-
-
-Also by default all input is converted into a _Uin8Array_ before digestion. This can be disabled (by setting ``utf8Input`` to ``false``). In this case other ArrayBuffers can be used as input.
 ___
 
 ## Returned object
@@ -33,14 +29,12 @@ The message can be updated with ``obj.update(message)``
 There are multiple functions available to show a representation of the hash. They all (with one exception) return a string of a different kind (binary, hexadecimal, base36...). Those functions are called like this: ``obj.toRepresentation()``  
 
 Available functions are:
-* ``toBin()``
+* ``toHex()``
 * ``toOct()``
 * ``toDec()``
 * ``toHex()``
 * ``toBase36()``
 * ``toBase64()``
-* ``toBase(radix)`` -> value between 2-36
-* ``toInt()``  -> returns an actual integer
 
 ___
 
