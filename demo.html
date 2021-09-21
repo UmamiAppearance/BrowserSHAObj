@@ -30,6 +30,7 @@
                     algorithm: SHAHashObj.getAlgorithms(),
                 },
                 txtInputDisabled: false,
+                calculating: false,
             };
 
             // Provide some functions to convert bytes
@@ -62,10 +63,12 @@
                         set: function(val) {
                             let formerType = this.curTypes.input;
                             let input = this.input;
-                            let forceUpdate = false;
+                            let forceUpdate = true;
+                            this.hashsum = "";
 
                             if (val === "file") {
                                 this.txtInputDisabled = true;
+                                forceUpdate = false;
 
                                 // store old input and type if type goes back to str/bytes
                                 nonFileInput = [input, formerType];
@@ -75,7 +78,6 @@
                                 // load old input if type switches back to str/bytes
                                 if (formerType === "file") {
                                     [input, formerType] = nonFileInput;
-                                    forceUpdate = true;
                                 }
                                 
                                 // convert from bytes to str and vice versa
@@ -99,12 +101,14 @@
                         set: function(val) {
                             this.curTypes.algorithm = val;
                             if (this.inputType !== "file") {
-                                hashers[val].update(this.inputFile).then(() => 
+                                hashers[val].update(this.input).then(() => 
                                     this.hashsum = hashers[val].toHex()
                                 );
                             } else {
-                                const pseudoEvent = {target: {files: [this.inputFile]}};
-                                this.fileToBuffer(pseudoEvent);
+                                if (this.inputFile) {
+                                    const pseudoEvent = {target: {files: [this.inputFile]}};
+                                    this.fileToBuffer(pseudoEvent);
+                                }
                             }
                         }
                     },
@@ -122,23 +126,29 @@
                     fileToBuffer: function(e) {
                         const reader = new FileReader();
                         this.inputFile = e.target.files[0];
+                        this.hashsum = "";
+                        this.calculating = true;
 
                         reader.addEventListener("load", function() {
-                            hashers[Data.curTypes.algorithm].update(this.result).then(() => 
-                                Data.hashsum = hashers[Data.curTypes.algorithm].toHex()
-                            );
+                            hashers[Data.curTypes.algorithm].update(this.result).then(() => {
+                                Data.hashsum = hashers[Data.curTypes.algorithm].toHex();
+                                Data.calculating = false;
+                                
+                            });
                         }, false);
                         
                         reader.readAsArrayBuffer(this.inputFile);
                     },
+                    clipboard: function() {
+                        window.navigator.clipboard.writeText(this.hashsum);
+                        const copied = document.querySelector("#copied");
+                        copied.classList.add("show");
+                        setTimeout(() => {
+                            copied.classList.remove("show");
+                        }, 1500)
+                    },
                 }
             });
-
-            /*
-            document.addEventListener("DOMContentLoaded", () => {
-                document.querySelector("#file-input").addEventListener("change", fileToBytes, false);
-            }, false);
-            */
         </script>
         <style>
             article > div {
@@ -158,11 +168,28 @@
                 height: 128px;
                 width: 380px;
             }
+            div#hash-wrap {
+                display: flex;
+            } 
             input#hashsum {
-                padding: 10px;
-                width: calc(100% - 20px);
-                margin-top: 8px;
+                padding: 10px 32px 10px 10px;
+                width: 100%;
+                margin-left: -1px;
                 border-radius: 0;
+            }
+            span#copy {
+                min-width: 26px;
+                min-height: 26px;
+                margin: auto 0 auto -32px;
+                background-image:  url('data:image/svg+xml;charset=UTF-8,<svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="none" stroke="dimgrey" stroke-width="5" d="m 37,30 v -7 c 0,-2.77 2.23,-5 5,-5 h 35 c 2.77,0 5,2.23 5,5 v 35 c 0,2.77 -2.23,5 -5,5 m 0,0 H 70 M 63,42 c 0,-2.77 -1.23,-5 -4,-5 H 23 c -2.77,0 -5,2.23 -5,5 v 35 c 0,2.77 2.23,5 5,5 h 35 c 2.77,0 5,-2.23 5,-5 z"></path></svg>');
+                background-repeat: no-repeat;
+                background-size: contain;
+                cursor: pointer;
+            }
+            span#copy.loading {
+                background-image: none;
+                min-width: 20px;
+                min-height: 20px;
             }
             label {
                 margin: 0;
@@ -185,6 +212,50 @@
             *:disabled, #file-input:disabled + label {
                 display: none;
             }
+            article.processing {
+                pointer-events: none;
+            }
+            article > div, select, textarea, label {
+                transition: 750ms all ease;
+            }
+            .processing select, .processing textarea, .processing label {
+                opacity: 0.5;
+            }
+            .processing div {
+                background-color: rgba(194, 194, 194, 0.2);
+            }
+            .processing #hashsum {
+                border: 2px solid #000;
+                box-shadow: 0 0 10px #aaa;
+            }
+            section#copied {
+                position: fixed;
+                margin: auto;
+                display: none;
+                width: 100%;
+                text-align: center;
+                top: 40%;
+                opacity: 0;
+            }
+            section#copied.show {
+                display: block;
+                animation: show 1500ms cubic-bezier(.8,.03,.58,1);
+            }
+            @keyframes show {
+                50% {
+                    opacity: 1;
+                }
+            }
+            #copied article {
+                background-color: lightslategray;
+                display: inline-block;
+                padding: 20px;
+                color: white;
+                font-weight: bold;
+                border-radius: 6px;
+                border: 1px solid lightgrey;
+                box-shadow: 0 0 2px #ccc;
+            }
         </style>
     </head>
     <body>
@@ -194,7 +265,7 @@
     <!-- Head of body -->
             
                 <article>
-                    <h1>SHAHashObj Demo Page free icons svg(Online SHAsum Calculator)</h1>
+                    <h1>SHAHashObj Demo Page (Online SHAsum Calculator)</h1>
                     <p>
                         
                     </p>
@@ -205,10 +276,10 @@
     <!-- Input section -->
 
             <section>
-                <article>
+                <article id="calculator" v-bind:class="{ processing: calculating }">
                     <h3>Calculator</h3>
                     <div>
-                        <form id="calculator">
+                        <form>
                             <p>
                                 <label for="input-type">input type</label>
                                 <select id="input-type" v-model="inputType">
@@ -225,12 +296,18 @@
                                 <select id="algorithm" v-model="algorithm">
                                     <option v-for="option in dataTypes.algorithm">{{ option }}</option>
                                 </select>
-                                <input id="hashsum" type="text" v-model="hashsum" readonly="true" placeholder="SHAsum (hex)" spellcheck="false">
+                                <div id="hash-wrap">
+                                    <input id="hashsum" type="text" v-model="hashsum" readonly="true" placeholder="SHAsum (hex)" spellcheck="false">
+                                    <span @click="clipboard" v-bind:class="{ loading: calculating }" id="copy" title="copy to clipboard">&nbsp;</span>
+                                </div>
                             </p>
                         </form>
                     </div>
                 </article>
-            </section>              
+            </section>
+            <section id="copied">
+                <article>copied to clipboard</article>
+            </section>      
         </main>
     </body>
 </html>
