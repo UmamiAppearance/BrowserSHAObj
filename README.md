@@ -8,7 +8,13 @@ With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the chec
 
 ## Usage
 
-### Constructor
+### Importing
+BrowserSHAObj is a ESM module. Importing works as follows:
+```js
+import BrowserSHAObj from "./path/BrowserSHAObj.js";
+```
+
+### Usage
         
 Two arguments are taken by the constructor:
 * ``algorithm`` (default: SHA-256)
@@ -35,7 +41,7 @@ const sha512obj = new SHAHashObj("SHA-512");
 const sha1obj = new SHAHashObj("SHA-1", "Hello World!");
 ```
 
-### Returned Object
+#### Returned Object
 The returned object holds a typed array (**UInt8**) of the digested hash buffer (``obj.array``).  
 
 The message can be updated with ``obj.update(message)``. The call returns a _Promise_.  
@@ -55,7 +61,7 @@ const bytesInput = new Uint8Array([69, 97, 115, 116, 101, 114, 101, 103, 103, 33
 sha256obj.update(bytesInput).then(() => ... );
 ```
 
-### Representations
+#### Representations
 There are multiple functions available to show a digested representation of the hash (those are build in methods of [BaseEx](https://github.com/UmamiAppearance/BaseExJS)). They are all returning a string of a different kind (hexadecimal, base32, base64...). Those functions are called like this: ``obj.toRepresentation()``  
 
 Available functions are:
@@ -69,7 +75,7 @@ Available functions are:
 * ``toBase85ascii()​​``
 * ``toBase91()``
 
-#### Examples for data representations:
+##### Examples for data representations:
 ```js
 // hexadecimal
 sha256obj.toHex();
@@ -81,5 +87,5 @@ sha256obj.toBase32_rfc3548();
 sha256obj.toBase64();
 ```
 
-### See it in action (demo page)
+## See it in action (demo page)
 To get a better idea of a possible use case, take a look at the [Demopage](https://umamiappearance.github.io/SHAHashObjectJS/demo.html).

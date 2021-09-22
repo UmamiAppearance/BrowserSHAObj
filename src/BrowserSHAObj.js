@@ -1,24 +1,14 @@
 /*
- * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BaseExJS}
+ * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
  *
- * @version 0.2.0
+ * @version 0.1.0
  * @author UmamiAppearance [mail@umamiappearance.eu]
- * @license GPL-3.0 AND BSD-3-Clause (Base91, Copyright (c) 2000-2006 Joachim Henke)
+ * @license GPL-3.0
  */
 
 
 // esm-module import (disabled for default js)
 import {BaseEx} from "../lib/BaseEx.esm.min.js"
-
-// loading classic script tag if not present (deactivated for esm-module)
-/*
-function importBaseEx() {
-    const script = document.createElement("script");
-    script.src = "lib/BaseEx.min.js";
-    document.querySelector("head").appendChild(script);
-}
-importBaseEx();
-*/
 
 class BrowserSHAObj {
     /*
@@ -46,7 +36,7 @@ class BrowserSHAObj {
         
         const algorithms = this.constructor.getAlgorithms();
 
-        // simplify the input for the user - sha1, Sha-256... 
+        // Simplify the input for the user - sha1, Sha-256... 
         // everything is fine, even the bit value by itself
         // (like 384), as long as the numbers match to the
         // provided algorithms.
@@ -124,5 +114,4 @@ class BrowserSHAObj {
     }
 }
 
-// esm export (disabled for default js)
 export default BrowserSHAObj;
