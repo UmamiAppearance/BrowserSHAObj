@@ -1,7 +1,7 @@
 # SHAHashObj
 
 __SHAHashObj__ creates a SHA-(1-512) object, that holds a typed array of the output for the given algorithm. The idea is to simplify the use of the buildin ``Crypto.subtle`` methods for hashsum generation of modern **browsers**.
-With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the hashsum can be exported to multible data representations.  [-> learn more](#Representations)
+With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the hashsum can be exported to multible data representations.  [-> learn more](#representations)
 ___
 
 ## Installation
@@ -16,9 +16,9 @@ Two arguments are taken by the constructor:
 * ``algorithm`` (default: SHA-256)
 * ``message`` (default: null)
 
-The ``message`` is set to ``null`` by default. If it is not overwritten the created object does not hold a digested array of the input. This has the advantage, that any new input can be called asynchronously and ``await``ed for. This should always be first choice.
+The ``message`` is set to ``null`` by default (possible input types are decribed [here](#returned-object)). If it is not overwritten the created object does not hold a digested array of the input. This has the advantage, that any new input can be called asynchronously and ``await``ed for. This should always be first choice.
 
-The ``algorithm`` is set to ``SHA-256`` by default. This can be changed to:
+The ``algorithm`` is set to ``SHA-256`` by default. Available options are:
 * ``SHA-1``
 * ``SHA-256``
 * ``SHA-384``
@@ -83,6 +83,6 @@ sha256obj.toBase64();
 ```
 
 ### See it in action (Demopage)
-To get a better idea of 
+To get a better idea of a possible usecase, take a look at the [Demopage](https://umamiappearance.github.io/SHAHashObjectJS/demo.html).
 
 
