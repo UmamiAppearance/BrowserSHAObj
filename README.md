@@ -37,7 +37,10 @@ const sha256obj = new SHAHashObj();
 // SHA-512, no message associated
 const sha512obj = new SHAHashObj("SHA-512");
 
-// SHA-1, with message associated (Setting the message during initialization makes it a synchronous call. You have been warned!)
+// SHA-1, with message associated 
+// (Setting the message during 
+// initialization makes it a synchronous
+// call. You have been warned!)
 const sha1obj = new SHAHashObj("SHA-1", "Hello World!");
 ```
 
