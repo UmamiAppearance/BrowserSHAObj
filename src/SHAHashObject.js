@@ -1,4 +1,4 @@
-// esm-moldule import (disabled for default js)
+// esm-module import (disabled for default js)
 import {BaseEx} from "../lib/BaseEx.esm.min.js"
 
 // loading classic script tag if not present (deactivated for esm-module)
@@ -36,9 +36,14 @@ class SHAHashObj {
     constructor(algorithm="SHA-256", input=null) {
         
         const algorithms = this.constructor.getAlgorithms();
-        algorithm = `SHA-${String(algorithm).match(/[0-9]+/)[0]}`;                      // simplify the input for the user - sha1, Sha-256... everything is fine, even the bitvlue by itself (like 384), as long as the numbers match to the provided algorithms
+
+        // simplify the input for the user - sha1, Sha-256... 
+        // everything is fine, even the bit value by itself
+        // (like 384), as long as the numbers match to the
+        // provided algorithms.
+        algorithm = `SHA-${String(algorithm).match(/[0-9]+/)[0]}`;
         if (!algorithms.includes(algorithm)) {
-            throw new Error(`Ivalid algorithm.\nValid arguments are: "${algorithms.join(", ")}".`);
+            throw new Error(`Invalid algorithm.\nValid arguments are: "${algorithms.join(", ")}".`);
         }
 
         this.algorithm = algorithm;

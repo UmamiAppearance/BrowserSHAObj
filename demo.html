@@ -19,7 +19,7 @@
             const Data = {
                 input: "Hello World!",
                 inputFile: null,
-                hashsum: null,
+                checksum: null,
                 curTypes: { 
                     input: "str",
                     algorithm: "SHA-256",
@@ -45,9 +45,9 @@
                 hashers[sha] = new SHAHashObj(sha);
             }
 
-            // generate the hashsum for initial settings
+            // generate the checksum for initial settings
             hashers[Data.curTypes.algorithm].update(Data.input).then(
-                () => Data.hashsum = hashers[Data.curTypes.algorithm].toHex()
+                () => Data.checksum = hashers[Data.curTypes.algorithm].toHex()
             );
 
             
@@ -64,7 +64,7 @@
                             let formerType = this.curTypes.input;
                             let input = this.input;
                             let forceUpdate = true;
-                            this.hashsum = "";
+                            this.checksum = "";
 
                             if (val === "file") {
                                 this.txtInputDisabled = true;
@@ -91,7 +91,7 @@
                             // set the new selected value
                             this.curTypes.input = val;
 
-                            // update hashsum (in most cases)
+                            // update checksum (in most cases)
                             if (forceUpdate) this.updateShasum();
                         },
                     },
@@ -103,7 +103,7 @@
                             this.curTypes.algorithm = val;
                             if (this.inputType !== "file") {
                                 hashers[val].update(this.input).then(() => 
-                                    this.hashsum = hashers[val].toHex()
+                                    this.checksum = hashers[val].toHex()
                                 );
                             } else {
                                 if (this.inputFile) {
@@ -121,18 +121,18 @@
                     updateShasum: function() {
                         const input = (this.inputType === "bytes") ? byteConverter.toUint(this.input) : this.input;
                         hashers[this.algorithm].update(input).then(() => 
-                            this.hashsum = hashers[this.algorithm].toHex()
+                            this.checksum = hashers[this.algorithm].toHex()
                         );
                     },
                     fileToBuffer: function(e) {
                         const reader = new FileReader();
                         this.inputFile = e.target.files[0];
-                        this.hashsum = "";
+                        this.checksum = "";
                         this.calculating = true;
 
                         reader.addEventListener("load", function() {
                             hashers[Data.curTypes.algorithm].update(this.result).then(() => {
-                                Data.hashsum = hashers[Data.curTypes.algorithm].toHex();
+                                Data.checksum = hashers[Data.curTypes.algorithm].toHex();
                                 Data.calculating = false;    
                             });
                         }, false);
@@ -140,7 +140,7 @@
                         reader.readAsArrayBuffer(this.inputFile);
                     },
                     clipboard: function() {
-                        window.navigator.clipboard.writeText(this.hashsum);
+                        window.navigator.clipboard.writeText(this.checksum);
                         const copied = document.querySelector("#copied");
                         copied.classList.add("show");
                         setTimeout(() => {
@@ -177,7 +177,7 @@
             div#hash-wrap {
                 display: flex;
             } 
-            input#hashsum {
+            input#checksum {
                 padding: 10px 32px 10px 10px;
                 width: 100%;
                 margin-left: -1px;
@@ -230,7 +230,7 @@
             .processing div {
                 background-color: rgba(194, 194, 194, 0.2);
             }
-            .processing #hashsum {
+            .processing #checksum {
                 border: 2px solid #000;
                 box-shadow: 0 0 10px #aaa;
             }
@@ -278,9 +278,9 @@
     <!-- Head of body -->
             
                 <article>
-                    <h1>SHAHashObj Demo Page (Online SHA-Hashsum Calculator)</h1>
+                    <h1>SHAHashObj Demo Page (Online SHA-Checksum Calculator)</h1>
                     <p>
-                        This demopage should illustrate the capabilities of using <a href="https://github.com/UmamiAppearance/SHAHashObjectJS">SHAHashObj</a> in an application.
+                        This demo page should illustrate the capabilities of using <a href="https://github.com/UmamiAppearance/SHAHashObjectJS">SHAHashObj</a> in an application.
                     </p>
                 </article>
 
@@ -310,7 +310,7 @@
                                     <option v-for="option in dataTypes.algorithm">{{ option }}</option>
                                 </select>
                                 <div id="hash-wrap">
-                                    <input id="hashsum" type="text" v-model="hashsum" readonly="true" placeholder="SHAsum (hex)" spellcheck="false">
+                                    <input id="checksum" type="text" v-model="checksum" readonly="true" placeholder="SHAsum (hex)" spellcheck="false">
                                     <span @click="clipboard" v-bind:class="{ loading: calculating }" id="copy" title="copy to clipboard">&nbsp;</span>
                                 </div>
                             </p>

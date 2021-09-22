@@ -1,7 +1,7 @@
 # SHAHashObj
 
-__SHAHashObj__ creates a SHA-(1/256/384/512) object, that holds a typed array of the output for the given algorithm. The idea is to simplify the use of the buildin ``Crypto.subtle`` methods for hashsum generation of modern **browsers**.
-With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the hashsum can be exported to multible data representations.  [-> learn more](#representations)
+__SHAHashObj__ creates a SHA-(1/256/384/512) object, that holds a typed array of the output for the given algorithm. The idea is to simplify the use of the build in ``Crypto.subtle`` methods for checksum generation of modern **browsers**.
+With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the checksum can be exported to multiple data representations.  [-> learn more](#representations)
 
 ## Installation
 
@@ -20,7 +20,7 @@ The ``algorithm`` is set to ``SHA-256`` by default. Available options are:
 * ``SHA-384``
 * ``SHA-512``
 
-The default for ``message`` is ``null`` (possible input types are decribed [here](#returned-object)). If it is not overwritten the created object does not hold a digested array of a message input. This has the advantage, that any (new) input update can be called asynchronously and ``await``ed for. This should always be first choice.
+The default for ``message`` is ``null`` (possible input types are described [here](#returned-object)). If it is not overwritten the created object does not hold a digested array of a message input. This has the advantage, that any (new) input update can be called asynchronously and ``await``ed for. This should always be first choice.
 
 #### Examples for creating a new Object:
 
@@ -56,7 +56,7 @@ sha256obj.update(bytesInput).then(() => ... );
 ```
 
 ### Representations
-There are multiple functions available to show a digested representation of the hash (those are buildin methods of [BaseEx](https://github.com/UmamiAppearance/BaseExJS)). They are all returning a string of a different kind (hexadecimal, base32, base64...). Those functions are called like this: ``obj.toRepresentation()``  
+There are multiple functions available to show a digested representation of the hash (those are build in methods of [BaseEx](https://github.com/UmamiAppearance/BaseExJS)). They are all returning a string of a different kind (hexadecimal, base32, base64...). Those functions are called like this: ``obj.toRepresentation()``  
 
 Available functions are:
 * ``toHex()``
@@ -69,7 +69,7 @@ Available functions are:
 * ``toBase85ascii()​​``
 * ``toBase91()``
 
-#### Examples for data representions:
+#### Examples for data representations:
 ```js
 // hexadecimal
 sha256obj.toHex();
@@ -81,5 +81,5 @@ sha256obj.toBase32_rfc3548();
 sha256obj.toBase64();
 ```
 
-### See it in action (Demopage)
-To get a better idea of a possible usecase, take a look at the [Demopage](https://umamiappearance.github.io/SHAHashObjectJS/demo.html).
+### See it in action (demo page)
+To get a better idea of a possible use case, take a look at the [Demopage](https://umamiappearance.github.io/SHAHashObjectJS/demo.html).
