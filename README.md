@@ -2,11 +2,9 @@
 
 __SHAHashObj__ creates a SHA-(1-512) object, that holds a typed array of the output for the given algorithm. The idea is to simplify the use of the buildin ``Crypto.subtle`` methods for hashsum generation of modern **browsers**.
 With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the hashsum can be exported to multible data representations.  [-> learn more](#representations)
-___
 
 ## Installation
 
-___
 
 ## Usage
 
@@ -84,5 +82,3 @@ sha256obj.toBase64();
 
 ### See it in action (Demopage)
 To get a better idea of a possible usecase, take a look at the [Demopage](https://umamiappearance.github.io/SHAHashObjectJS/demo.html).
-
-
