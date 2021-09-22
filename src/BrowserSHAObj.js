@@ -1,3 +1,12 @@
+/*
+ * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BaseExJS}
+ *
+ * @version 0.2.0
+ * @author UmamiAppearance [mail@umamiappearance.eu]
+ * @license GPL-3.0 AND BSD-3-Clause (Base91, Copyright (c) 2000-2006 Joachim Henke)
+ */
+
+
 // esm-module import (disabled for default js)
 import {BaseEx} from "../lib/BaseEx.esm.min.js"
 
@@ -11,15 +20,15 @@ function importBaseEx() {
 importBaseEx();
 */
 
-class SHAHashObj {
+class BrowserSHAObj {
     /*
         Creates a SHA-(1-512) object, that holds an array
         of the output for the given algorithm. Multiple
         representations of the input-digest are available.
         
-        Three arguments are taken by the constructor.
-            * input
+        Two arguments are taken by the constructor.
             * algorithm
+            * input
         
         The input is set to "null" by default. If it is not
         overwritten the created object does not hold the processed
@@ -116,4 +125,4 @@ class SHAHashObj {
 }
 
 // esm export (disabled for default js)
-export default SHAHashObj;
+export default BrowserSHAObj;
