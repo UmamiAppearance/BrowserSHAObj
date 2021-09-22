@@ -20,7 +20,7 @@ The ``algorithm`` is set to ``SHA-256`` by default. Available options are:
 * ``SHA-384``
 * ``SHA-512``
 
-The default for ``message`` is ``null`` (possible input types are described [here](#returned-object)). If it is not overwritten the created object does not hold a digested array of a message input. This has the advantage, that any (new) input update can be called asynchronously and ``await``ed for. This should always be first choice.
+The default for ``message`` is ``null`` (possible input types are described [here](#returned-object)). If it is not overwritten the created object does not hold a digested array of a message input (yet). This has the advantage, that any (new) input update can be called asynchronously and ``await``ed for.
 
 #### Examples for creating a new Object:
 
@@ -40,7 +40,7 @@ The returned object holds a typed array (**UInt8**) of the digested hash buffer 
 
 The message can be updated with ``obj.update(message)``. The call returns a _Promise_.  
   
-``message`` takes as input:
+``message`` takes as input type:
 * **String**
 * **Typed Array**
 * **Arraybuffer**
