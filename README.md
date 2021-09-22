@@ -14,7 +14,7 @@ BrowserSHAObj is a ESM module. Importing works as follows:
 import BrowserSHAObj from "./path/BrowserSHAObj.js";
 ```
 
-### Usage
+### Creating an instance
         
 Two arguments are taken by the constructor:
 * ``algorithm`` (default: SHA-256)
