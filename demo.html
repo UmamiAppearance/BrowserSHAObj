@@ -42,7 +42,7 @@
             // generate an object, that holds instances of all available hashers
             const hashers = new Object();
             for (const sha of Data.dataTypes.algorithm) {
-                hashers[sha] = new SHAHashObj(null, sha);
+                hashers[sha] = new SHAHashObj(sha);
             }
 
             // generate the hashsum for initial settings
@@ -278,9 +278,9 @@
     <!-- Head of body -->
             
                 <article>
-                    <h1>SHAHashObj Demo Page (Online SHAsum Calculator)</h1>
+                    <h1>SHAHashObj Demo Page (Online SHA-Hashsum Calculator)</h1>
                     <p>
-                        
+                        This demopage should illustrate the capabilities of using <a href="https://github.com/UmamiAppearance/SHAHashObjectJS">SHAHashObj</a> in an application.
                     </p>
                 </article>
 

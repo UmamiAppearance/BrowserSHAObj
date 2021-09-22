@@ -33,9 +33,10 @@ class SHAHashObj {
         In this case other ArrayBuffers can be used as input.
     */
 
-    constructor(input=null, algorithm="SHA-256") {
+    constructor(algorithm="SHA-256", input=null) {
+        
         const algorithms = this.constructor.getAlgorithms();
-        algorithm = `SHA-${String(algorithm).match(/[0-9]+/)[0]}`;                      // simplify the input for the user - sha1, Sha-256... everything is fine, even 384 by itself, as long as the numbers match to the provided algorithms
+        algorithm = `SHA-${String(algorithm).match(/[0-9]+/)[0]}`;                      // simplify the input for the user - sha1, Sha-256... everything is fine, even the bitvlue by itself (like 384), as long as the numbers match to the provided algorithms
         if (!algorithms.includes(algorithm)) {
             throw new Error(`Ivalid algorithm.\nValid arguments are: "${algorithms.join(", ")}".`);
         }
