@@ -1,6 +1,6 @@
 # BrowserSHAObj
 
-BrowserSHAObj__ creates a SHA-(1/256/384/512) object, that holds a typed array of the output for the given algorithm. The idea is to simplify the use of the build in ``Crypto.subtle`` methods for checksum generation of modern **browsers**.
+**BrowserSHAObj** creates a SHA-(1/256/384/512) object, that holds a typed array of the output for the given algorithm. The idea is to simplify the use of the build in ``Crypto.subtle`` methods for checksum generation of modern **browsers**.
 With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the checksum can be exported to multiple data representations.  [-> learn more](#representations)
 
 ## Installation
