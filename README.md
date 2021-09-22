@@ -1,7 +1,7 @@
 # BrowserSHAObj
 
 **BrowserSHAObj** creates a SHA-(1/256/384/512) object, that holds a typed array of the output for the given algorithm. The idea is to simplify the use of the build in ``Crypto.subtle`` methods for checksum generation of modern **browsers**.
-With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the checksum can be exported to multiple data representations. [-> learn more](#representations)
+With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the checksum can be exported to multiple data [representations](#representations).
 
 ## Installation
 
@@ -9,7 +9,7 @@ With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the chec
 ## Usage
 
 ### Importing
-BrowserSHAObj is a ESM module. Importing works as follows:
+BrowserSHAObj is a ESM module and exported as _default_. Importing works as follows:
 ```js
 import BrowserSHAObj from "./path/BrowserSHAObj.js";
 ```

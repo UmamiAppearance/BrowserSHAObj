@@ -26,7 +26,7 @@
                 },
                 dataTypes: {
                     input: ["str", "bytes", "file"],
-                    algorithm: SHAHashObj.getAlgorithms(),
+                    algorithm: BrowserSHAObj.getAlgorithms(),
                 },
                 txtInputDisabled: false,
                 calculating: false,
@@ -42,7 +42,7 @@
             // generate an object, that holds instances of all available hashers
             const hashers = new Object();
             for (const sha of Data.dataTypes.algorithm) {
-                hashers[sha] = new SHAHashObj(sha);
+                hashers[sha] = new BrowserSHAObj(sha);
             }
 
             // generate the checksum for initial settings
@@ -278,9 +278,9 @@
     <!-- Head of body -->
             
                 <article>
-                    <h1>SHAHashObj Demo Page (Online SHA-Checksum Calculator)</h1>
+                    <h1>BrowserSHAObj Demo Page (Online SHA Checksum Calculator)</h1>
                     <p>
-                        This demo page should illustrate the capabilities of using <a href="https://github.com/UmamiAppearance/SHAHashObjectJS">SHAHashObj</a> in an application.
+                        This demo page should illustrate the capabilities of using <a href="https://github.com/UmamiAppearance/BrowserSHAObject">BrowserSHAObj</a> in an application.
                     </p>
                 </article>
 
