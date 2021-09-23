@@ -1,0 +1,35 @@
+{
+  "name": "browser-sha-obj",
+  "version": "0.1.0",
+  "description": "JavaScript implementation of SHA (1/256/384/512) checksum calculation for the browser.",
+  "browser": "src/BrowserSHAObj.js",
+  "type": "module",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/node.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UmamiAppearance/SHAHashObjectJS.git"
+  },
+  "keywords": [
+    "Browser",
+    "SHA1",
+    "SHA256",
+    "SHA512",
+    "SHA384",
+    "hash-functions",
+    "checksum",
+    "subtlecrypto"
+  ],
+  "author": "UmamiAppearance",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/UmamiAppearance/SHAHashObjectJS/issues",
+    "email": "mail@umamiappearance.eu"
+  },
+  "homepage": "https://github.com/UmamiAppearance/SHAHashObjectJS#readme"
+}
