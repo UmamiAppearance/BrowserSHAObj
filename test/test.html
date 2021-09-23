@@ -2,15 +2,14 @@
 <html lang="">
     <head>
         <meta charset="utf-8">
+        <meta lang="en">
         <title>104 105</title>
         <script type="module">
+
+
             import BrowserSHAObj from "../src/BrowserSHAObj.js";
             
-            window.tests = {
-                count: 0,
-                errors: 0,
-                errorMessages: new Object()
-            }
+            const totalRepresentations = 10;
 
             const testInput = [
                 "Hello World!",
@@ -40,10 +39,11 @@
                 }
                 
                 const hashers = new Object();
+                let testedRepresentations = false;
                 for (const algorithm of Object.keys(expectedOutputs)) {
                     const hashFN = new BrowserSHAObj(algorithm);
                     for (const input of testInput) {
-                        results.count++
+                        results.count++;
                         await hashFN.update(input);
                         const hexDigest = hashFN.toHex();
                         if (hexDigest !== expectedOutputs[algorithm]) {
@@ -51,10 +51,37 @@
                             if (!results.errorMessages[algorithm]) results.errorMessages[algorithm] = new Object();
                             results.errorMessages[algorithm].hexTest = makeError(input, hexDigest, expectedOutputs[algorithm]);
                         }
+
+                        if (!testedRepresentations) {
+                            let fnNames = Object.keys(hashFN);
+                            fnNames = fnNames.filter(key => Boolean(key.match(/^to/)));
+                            results.count++;
+                            if (fnNames.length !== totalRepresentations) {
+                                results.errors++;
+                                results.errorMessages.repr = `Found representations does not match the expected length of: ${totalRepresentations}`;
+                            }
+                            for (const base in fnNames) {
+                                results.count++;
+                                try {
+                                    const repr = hashFN[base]();
+                                    if (repr.length < 1) {
+                                        results.errors++;
+                                        results.errorMessages.repr = `Could not get representation '${base}`;
+                                    }
+                                }
+                                catch (e) {
+                                    results.errorMessages.repr = `${base}`;
+                                }
+                            } 
+
+                            testedRepresentations = true;
+                        }
                     }
                 }
                 return results;
             }
+
+
 
         </script>
     </head>
