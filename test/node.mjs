@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
 import * as http from "http";
-import * as fs from "fs";
+import {readFile} from "fs";
 import * as path from "path"; 
 
 const port = 9999;
@@ -16,44 +16,36 @@ http.createServer(function (request, response) {
     var mimeTypes = {
         '.html': 'text/html',
         '.js': 'text/javascript',
-        '.css': 'text/css',
     };
 
     var contentType = mimeTypes[extname] || 'application/octet-stream';
 
-    fs.readFile(filePath, function(error, content) {
-        if (error) {
-            if(error.code == 'ENOENT') {
-                fs.readFile('./404.html', function(error, content) {
-                    response.writeHead(404, { 'Content-Type': 'text/html' });
-                    response.end(content, 'utf-8');
-                });
-            }
-            else {
-                response.writeHead(500);
-                response.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
-            }
-        }
-        else {
-            response.writeHead(200, { 'Content-Type': contentType });
-            response.end(content, 'utf-8');
-        }
+    readFile(filePath, function(error, content) {
+        response.writeHead(200, { 'Content-Type': contentType });
+        response.end(content, 'utf-8');
     });
 
 }).listen(port);
-console.log(`Server running at http://127.0.0.1:9999/`);
+console.log(`Starting local server at http://127.0.0.1:9999/`);
 
-
-//const puppeteer = require('puppeteer');
 
 async function main() {
-    let output;
-    const browser = await puppeteer.launch({ dumpio: true });
+    const browser = await puppeteer.launch();
+    await browser.createIncognitoBrowserContext();
+    
     const page = await browser.newPage();
     await page.goto("http://127.0.0.1:9999/");
-    await page.evaluate(() => console.log(window.tests));
+    const result = await page.evaluate(async () => 
+        await window.makeTests()
+    );
     await browser.close();
-    //console.log(output.errors);
+    console.log(result);
+    if (result.errors) {
+        console.error(`Errors occured!`);
+        return 1;
+    }
+    console.log("Everything seems to work fine.");
+    return 0;
 }
 
 await main();
