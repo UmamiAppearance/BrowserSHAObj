@@ -2,7 +2,7 @@
 <html lang="">
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>104 105</title>
         <script type="module">
             import BrowserSHAObj from "../src/BrowserSHAObj.js";
             
@@ -46,9 +46,7 @@
                         results.count++
                         await hashFN.update(input);
                         const hexDigest = hashFN.toHex();
-                        console.log(expectedOutputs[algorithm]);
                         if (hexDigest !== expectedOutputs[algorithm]) {
-                            console.log("error");
                             results.errors++;
                             if (!results.errorMessages[algorithm]) results.errorMessages[algorithm] = new Object();
                             results.errorMessages[algorithm].hexTest = makeError(input, hexDigest, expectedOutputs[algorithm]);
@@ -61,8 +59,14 @@
         </script>
     </head>
     <body>
-        <header></header>
-        <main>hello world</main>
-        <footer></footer>
+        <p>
+            This page is not meant to be opened manually.<br> 
+            It is only created for test purposes and is getting opened with a headless browser.<br>
+            If you like to make tests run:
+        </p>
+        <code style="background-color:powderblue; color:midnightblue;padding: 6px;">npm test</code>
+        <p>
+            from your terminal.
+        </p>
     </body>
 </html>
