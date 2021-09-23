@@ -31,7 +31,7 @@ console.log(`Starting local server at http://127.0.0.1:9999/`);
 
 async function main() {
     const browser = await puppeteer.launch();
-    await browser.createIncognitoBrowserContext();
+    await browser.createIncognitoBrowserContext({ dumpio: true });
     
     const page = await browser.newPage();
     await page.goto("http://127.0.0.1:9999/");
@@ -41,7 +41,7 @@ async function main() {
     await browser.close();
     console.log(result);
     if (result.errors) {
-        console.error(`Errors occured!`);
+        console.error(`Errors occurred!`);
         return 1;
     }
     console.log("Everything seems to work fine.");

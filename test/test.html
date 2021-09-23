@@ -38,7 +38,7 @@
                     errors: 0,
                     errorMessages: new Object()
                 }
-
+                
                 const hashers = new Object();
                 for (const algorithm of Object.keys(expectedOutputs)) {
                     const hashFN = new BrowserSHAObj(algorithm);
@@ -48,6 +48,7 @@
                         const hexDigest = hashFN.toHex();
                         console.log(expectedOutputs[algorithm]);
                         if (hexDigest !== expectedOutputs[algorithm]) {
+                            console.log("error");
                             results.errors++;
                             if (!results.errorMessages[algorithm]) results.errorMessages[algorithm] = new Object();
                             results.errorMessages[algorithm].hexTest = makeError(input, hexDigest, expectedOutputs[algorithm]);
