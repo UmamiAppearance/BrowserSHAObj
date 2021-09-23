@@ -74,6 +74,8 @@ class BrowserSHAObj {
         
         this.hash.array = new Uint8Array(hashBuffer);
         this.addConverters();
+        
+        return true;
     }
 
     async addConverters() {

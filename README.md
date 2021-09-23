@@ -47,7 +47,7 @@ const sha1obj = new SHAHashObj("SHA-1", "Hello World!");
 #### Returned Object
 The returned object holds a typed array (**UInt8**) of the digested hash buffer (``obj.array``). The message can be updated with ``obj.update(message)``. The call returns a _Promise_.  
   
-_``message`` takes as input type:_
+_``message`` accepts as input type:_
 * **String**
 * **Typed Array**
 * **Arraybuffer**
@@ -65,7 +65,7 @@ sha256obj.update(bytesInput).then(() => ... );
 #### Representations
 There are multiple functions available to receive a digested representation of the hash (those are build in methods of [BaseEx](https://github.com/UmamiAppearance/BaseExJS)). They are all returning a string of a different kind (hexadecimal, base32, base64...). Those functions are called like this: ``obj.toRepresentation()``  
 
-Available functions are:
+Available methods are:
 * ``toHex()``
 * ``toBase32_rfc3548()​​``
 * ``toBase32_rfc4648()​​``
