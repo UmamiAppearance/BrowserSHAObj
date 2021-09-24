@@ -17,10 +17,10 @@
   },
   "keywords": [
     "Browser",
-    "SHA1",
-    "SHA256",
-    "SHA512",
-    "SHA384",
+    "SHA-1",
+    "SHA-256",
+    "SHA-512",
+    "SHA-384",
     "hash-functions",
     "checksum",
     "subtlecrypto"
@@ -34,5 +34,8 @@
   "homepage": "https://github.com/UmamiAppearance/SHAHashObjectJS#readme",
   "devDependencies": {
     "puppeteer": "^10.4.0"
+  },
+  "dependencies": {
+    "base-ex": "^0.1.1"
   }
 }
