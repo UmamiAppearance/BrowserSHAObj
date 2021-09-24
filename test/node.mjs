@@ -2,7 +2,7 @@ import {createServer} from "http";
 import {readFile} from "fs";
 import puppeteer from "puppeteer";
 
-const port = 8080;
+const port = 9999;
 
 const mimeTypes = {
     html: "text/html",
@@ -49,15 +49,15 @@ const terminateServer = async () => {
 
 async function main() {
     server.listen(port);
-    console.log(`- spinning up local test server at http://127.0.0.1:${port}/`);
+    console.log(`- spinning up local test http server at '127.0.0.1:${port}/'`);
 
     console.log("- running tests:");
     const browser = await puppeteer.launch();
     await browser.createIncognitoBrowserContext({ dumpio: true });
     
     const page = await browser.newPage();
-    await page.goto("http://127.0.0.1:9999/");
-    console.log("    => running test functions");
+    await page.goto(`http://127.0.0.1:${port}/`);
+    console.log("    + running test functions");
     const result = await page.evaluate(async () => 
         await window.makeTests()
     );
@@ -66,6 +66,8 @@ async function main() {
 
     console.log("- finished tests\n- shutting down test server");
     console.log("-------\nresults");
+
+    if (!result.errors) delete result.errorMessages;
     console.log(JSON.stringify(result, null, 4));
     if (result.errors) {
         console.error(`${result.errors} error${ (result.errors > 1) ? "s" : "" } occurred!`);

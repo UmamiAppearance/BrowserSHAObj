@@ -40,7 +40,7 @@
                 }
 
                 const results = {
-                    count: 0,
+                    tests: 0,
                     errors: 0,
                     errorMessages: new Object()
                 }
@@ -50,25 +50,28 @@
                 for (const algorithm of Object.keys(expectedOutputs)) {
                     const hashFN = new BrowserSHAObj(algorithm);
                     for (const _type in testInput) {
-                        results.count++;
-                        await hashFN.update(testInput[_type]);
+                        results.tests++;
+                        const input = testInput[_type];
+                        await hashFN.update(input);
                         const hexDigest = hashFN.toHex();
+                        const unit = `${algorithm}-${_type}`;
                         if (hexDigest !== expectedOutputs[algorithm]) {
                             results.errors++;
-                            if (!results.errorMessages[algorithm]) results.errorMessages[algorithm] = new Object();
-                            results.errorMessages[algorithm].hexTest = makeError(testInput[_type], hexDigest, expectedOutputs[algorithm], _type);
+                            if (!results.errorMessages[unit]) results.errorMessages[unit] = new Object();
+                            const inputLog = (_type === "buffer") ? `<buffer of str '${testInput.str}'>` : input;
+                            results.errorMessages[unit].hexTest = makeError(inputLog, hexDigest, expectedOutputs[algorithm], _type);
                         }
 
                         if (!testedRepresentations) {
                             let fnNames = Object.keys(hashFN);
                             fnNames = fnNames.filter(key => Boolean(key.match(/^to/)));
-                            results.count++;
+                            results.tests++;
                             if (fnNames.length !== totalRepresentations) {
                                 results.errors++;
                                 results.errorMessages.repr = `Found representations does not match the expected length of: ${totalRepresentations}`;
                             }
                             for (const base of fnNames) {
-                                results.count++;
+                                results.tests++;
                                 try {
                                     const repr = hashFN[base]();
                                     if (repr.length < 1) {
