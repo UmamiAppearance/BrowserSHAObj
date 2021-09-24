@@ -31,5 +31,8 @@
     "url": "https://github.com/UmamiAppearance/SHAHashObjectJS/issues",
     "email": "mail@umamiappearance.eu"
   },
-  "homepage": "https://github.com/UmamiAppearance/SHAHashObjectJS#readme"
+  "homepage": "https://github.com/UmamiAppearance/SHAHashObjectJS#readme",
+  "devDependencies": {
+    "puppeteer": "^10.4.0"
+  }
 }

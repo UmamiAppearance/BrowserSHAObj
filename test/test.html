@@ -11,25 +11,6 @@
 
             window.makeTests = async () => {
 
-                // Number of representations available.
-                // The amount is defined by looking into 
-                // available methods from the lib BaseEx.  
-                const totalRepresentations = 9;
-
-                const str = "Hello World!";
-                const testInput = {
-                    str: str,
-                    typed: new TextEncoder().encode(str),
-                    buffer: new TextEncoder().encode(str).buffer
-                };
-
-                const expectedOutputs = {
-                    "SHA-1":   "2ef7bde608ce5404e97d5f042f95f89f1c232871",
-                    "SHA-256": "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
-                    "SHA-384": "bfd76c0ebbd006fee583410547c1887b0292be76d582d96c242d2a792723e3fd6fd061f9d5cfd13b8f961358e6adba4a",
-                    "SHA-512": "861844d6704e8573fec34d967e20bcfef3d424cf48be04e6dc08f2bd58c729743371015ead891cc3cf1c9d34b49264b510751b1ff9e537937bc46b5d6ff4ecc8"
-                }
-
                 function makeError(input, output, expected, unit) {
                     return {
                         input: input,
@@ -37,6 +18,20 @@
                         expected: expected,
                         unit: unit
                     }
+                }
+
+                const strInput = "Hello World!";
+                const testInput = {
+                    str: strInput,
+                    typed: new TextEncoder().encode(strInput),
+                    buffer: new TextEncoder().encode(strInput).buffer
+                };
+
+                const expectedOutputs = {
+                    "SHA-1":   "2ef7bde608ce5404e97d5f042f95f89f1c232871",
+                    "SHA-256": "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+                    "SHA-384": "bfd76c0ebbd006fee583410547c1887b0292be76d582d96c242d2a792723e3fd6fd061f9d5cfd13b8f961358e6adba4a",
+                    "SHA-512": "861844d6704e8573fec34d967e20bcfef3d424cf48be04e6dc08f2bd58c729743371015ead891cc3cf1c9d34b49264b510751b1ff9e537937bc46b5d6ff4ecc8"
                 }
 
                 const results = {
@@ -65,11 +60,6 @@
                         if (!testedRepresentations) {
                             let fnNames = Object.keys(hashFN);
                             fnNames = fnNames.filter(key => Boolean(key.match(/^to/)));
-                            results.tests++;
-                            if (fnNames.length !== totalRepresentations) {
-                                results.errors++;
-                                results.errorMessages.repr = `Found representations does not match the expected length of: ${totalRepresentations}`;
-                            }
                             for (const base of fnNames) {
                                 results.tests++;
                                 try {
@@ -105,7 +95,7 @@
         </p>
         <code style="background-color:powderblue; color:midnightblue;padding: 6px;">npm test</code>
         <p>
-            from your terminal.
+            from your terminal. Make sure that <i>puppeteer</i> is installed.
         </p>
     </body>
 </html>
