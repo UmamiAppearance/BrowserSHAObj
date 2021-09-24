@@ -1,39 +1,56 @@
-import puppeteer from "puppeteer";
-import * as http from "http";
+import {createServer} from "http";
 import {readFile} from "fs";
-import * as path from "path"; 
+import puppeteer from "puppeteer";
 
-const port = 9999;
-http.createServer(function (request, response) {
+const port = 8080;
+
+const mimeTypes = {
+    html: "text/html",
+    js: "text/javascript"
+}
+
+let socket;
+
+const server = createServer(function (request, response) {
+    
+    let filePath;
     if (request.url === "/") {
+        filePath = "./test/test.html"
         console.log("    + opening html test page");
     } else {
         console.log(`    + importing ${request.url.split("/")[2]}`);
+        filePath = `.${request.url}`;
     }
 
-    var filePath = '.' + request.url;
-    if (filePath == './') {
-        filePath = './test/test.html';
-    }
-
-    var extname = String(path.extname(filePath)).toLowerCase();
-    var mimeTypes = {
-        '.html': 'text/html',
-        '.js': 'text/javascript',
-    };
-
-    var contentType = mimeTypes[extname] || 'application/octet-stream';
+    const contentType = mimeTypes[filePath.split('.').pop()];
 
     readFile(filePath, function(error, content) {
+        if (error) {
+            console.error(error);
+            return 1;
+        }
         response.writeHead(200, { 'Content-Type': contentType });
         response.end(content, 'utf-8');
     });
 
-}).listen(port);
-console.log(`- spinning up local test server at http://127.0.0.1:${port}/`);
+});
 
+server.on("connection", (sock) => {
+    socket = sock;
+    server.once("close", () => {
+        socket = null;
+    });
+});
+
+const terminateServer = async () => {
+    if (socket) socket.destroy();
+    server.close();
+};
 
 async function main() {
+    server.listen(port);
+    console.log(`- spinning up local test server at http://127.0.0.1:${port}/`);
+
     console.log("- running tests:");
     const browser = await puppeteer.launch();
     await browser.createIncognitoBrowserContext({ dumpio: true });
@@ -45,6 +62,8 @@ async function main() {
         await window.makeTests()
     );
     await browser.close();
+    await terminateServer();
+
     console.log("- finished tests\n- shutting down test server");
     console.log("-------\nresults");
     console.log(JSON.stringify(result, null, 4));
@@ -56,4 +75,4 @@ async function main() {
     return 0;
 }
 
-await main();
+main().then((exitCode) => process.exit(exitCode));
