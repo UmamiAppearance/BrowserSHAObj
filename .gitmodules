@@ -1,0 +1,3 @@
+[submodule "lib/BaseEx"]
+	path = lib/BaseEx
+	url = https://github.com/UmamiAppearance/BaseExJS
