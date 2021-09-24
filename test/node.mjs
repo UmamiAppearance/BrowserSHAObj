@@ -5,7 +5,11 @@ import * as path from "path";
 
 const port = 9999;
 http.createServer(function (request, response) {
-    console.log('request ', request.url);
+    if (request.url === "/") {
+        console.log("    + opening html test page");
+    } else {
+        console.log(`    + importing ${request.url.split("/")[2]}`);
+    }
 
     var filePath = '.' + request.url;
     if (filePath == './') {
@@ -26,22 +30,26 @@ http.createServer(function (request, response) {
     });
 
 }).listen(port);
-console.log(`Starting local server at http://127.0.0.1:9999/`);
+console.log(`- spinning up local test server at http://127.0.0.1:${port}/`);
 
 
 async function main() {
+    console.log("- running tests:");
     const browser = await puppeteer.launch();
     await browser.createIncognitoBrowserContext({ dumpio: true });
     
     const page = await browser.newPage();
     await page.goto("http://127.0.0.1:9999/");
+    console.log("    => running test functions");
     const result = await page.evaluate(async () => 
         await window.makeTests()
     );
     await browser.close();
-    console.log(result);
+    console.log("- finished tests\n- shutting down test server");
+    console.log("-------\nresults");
+    console.log(JSON.stringify(result, null, 4));
     if (result.errors) {
-        console.error(`Errors occurred!`);
+        console.error(`${result.errors} error${ (result.errors > 1) ? "s" : "" } occurred!`);
         return 1;
     }
     console.log("Everything seems to work fine.");

@@ -50,7 +50,7 @@ The returned object holds a typed array (**UInt8**) of the digested hash buffer 
 _``message`` accepts as input type:_
 * **String**
 * **Typed Array**
-* **Arraybuffer**
+* **ArrayBuffer**
 
 #### Examples for updating the message:
 ```js
