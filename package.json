@@ -2,7 +2,7 @@
   "name": "browser-sha-obj",
   "version": "0.1.0",
   "description": "JavaScript implementation of SHA (1/256/384/512) checksum calculation for the browser.",
-  "browser": "src/BrowserSHAObj.js",
+  "browser": "index.js",
   "type": "module",
   "directories": {
     "lib": "lib",
