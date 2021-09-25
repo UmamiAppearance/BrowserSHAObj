@@ -49,7 +49,7 @@ const terminateServer = async () => {
 
 async function main() {
     server.listen(port);
-    console.log(`- spinning up local test http server at '127.0.0.1:${port}/'`);
+    console.log(`- spinning up local http test server at '127.0.0.1:${port}/'`);
 
     console.log("- running tests:");
     const browser = await puppeteer.launch();

@@ -1,6 +1,6 @@
 /*
  * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
- * esm-module without npm
+ * esm-module with relative import
  */
 
 import {BaseEx} from "../lib/BaseEx/dist/BaseEx.esm.min.js";
