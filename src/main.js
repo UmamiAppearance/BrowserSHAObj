@@ -76,25 +76,19 @@ class BrowserSHAObj {
 
     async addConverters() {
         /*
-            Appends methods for getting common representations
-            of the hash array to the returned object.
+            Appends BaseEx encoders to the returned object for the ability
+            to covert the byte array of a hash to many representations.
         */
         if (this.hash.hasConverters) return;
-                
-        if (!("BaseEx" in this)) {
-            throw new Error("Library 'BaseEx' is not present.");
-        }
 
         const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
-        
-        const baseEx = new this.BaseEx("bytes");
-        const converters = Object.keys(baseEx).slice(1); 
-        
-        this.hash.toHex = () => baseEx.base16.encode(this.hash.array);
-        
+
+        this.hash.toHex = () => this.baseEx.base16.encode(this.hash.array);
+        const converters = Object.keys(this.baseEx).slice(1);
         for (const converter of converters) {
-            this.hash[`to${capitalize(converter)}`] = () => baseEx[converter].encode(this.hash.array);
+            this.hash[`to${capitalize(converter)}`] = () => this.baseEx[converter].encode(this.hash.array);
         }
+        
         this.hash.hasConverters = true;
     }
 

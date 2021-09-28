@@ -1,6 +1,7 @@
-import {createServer} from "http";
-import {readFile} from "fs";
+import { createServer } from "http";
 import puppeteer from "puppeteer";
+import { readFile } from "fs";
+
 
 const port = 9999;
 
@@ -11,7 +12,7 @@ const mimeTypes = {
 
 let socket;
 
-const server = createServer(function (request, response) {
+const server = createServer((request, response) => {
     
     let filePath;
     if (request.url === "/") {
@@ -24,13 +25,14 @@ const server = createServer(function (request, response) {
 
     const contentType = mimeTypes[filePath.split('.').pop()];
 
-    readFile(filePath, function(error, content) {
+    readFile(filePath, (error, content) => {
         if (error) {
             console.error(error);
             return 1;
         }
         response.writeHead(200, { 'Content-Type': contentType });
         response.end(content, 'utf-8');
+        return 0;
     });
 
 });
@@ -58,9 +60,7 @@ async function main() {
     const page = await browser.newPage();
     await page.goto(`http://127.0.0.1:${port}/`);
     console.log("    + running test functions");
-    const result = await page.evaluate(async () => 
-        await window.makeTests()
-    );
+    const result = await page.evaluate(() => window.makeTests());
     await browser.close();
     await terminateServer();
 
@@ -70,7 +70,7 @@ async function main() {
     if (!result.errors) delete result.errorMessages;
     console.log(JSON.stringify(result, null, 4));
     if (result.errors) {
-        console.error(`${result.errors} error${ (result.errors > 1) ? "s" : "" } occurred!`);
+        console.error(`${result.errors} error${(result.errors > 1) ? "s" : ""} occurred!`);
         return 1;
     }
     console.log("Everything seems to work fine.");

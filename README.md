@@ -1,9 +1,38 @@
 # BrowserSHAObj
 
+[![License](https://img.shields.io/github/license/UmamiAppearance/BrowserSHAObj?color=009911&style=for-the-badge)](./LICENSE)
+[![npm](https://img.shields.io/npm/v/browser-sha-obj?color=%23009911&style=for-the-badge)](https://www.npmjs.com/package/browser-sha-obj)
+
+
 **BrowserSHAObj** creates a SHA-(1/256/384/512) object, that holds a typed array of the output for the given algorithm. The idea is to simplify the use of the build in ``Crypto.subtle`` methods for checksum generation of modern **browsers**.
 With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the checksum can be exported to multiple data [representations](#representations).
 
 ## Installation
+
+### GitHub
+```sh
+git clone https://github.com/UmamiAppearance/BrowserSHAObj.git
+```
+
+### npm
+```sh
+nmp install browser-sha-obj
+```
+
+## Builds
+The GitHub repository has ready to use builds included. You can find them in [dist](https://github.com/UmamiAppearance/BrowserSHAObj/tree/main/dist). The npm package comes without pre build files. 
+
+For building you have to run:
+
+```sh
+npm run build
+``` 
+
+Either way you have two builds available ([esm](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and [iife](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)), plus a minified version of each. 
+* ``BrowserSHAObj.esm.js``
+* ``BrowserSHAObj.esm.min.js``
+* ``BrowserSHAObj.iife.js``
+* ``BrowserSHAObj.iife.min.js``
 
 
 ## Usage
@@ -11,7 +40,12 @@ With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the chec
 ### Importing
 BrowserSHAObj is a ESM module and exported as _default_. Importing works as follows:
 ```js
+// esm
 import BrowserSHAObj from "./path/BrowserSHAObj.js";
+```
+```html
+<!-- script tag -->
+<script src="path/BrowserSHAObj.iife.min.js">
 ```
 
 ### Creating an instance

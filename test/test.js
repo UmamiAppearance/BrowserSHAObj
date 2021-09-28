@@ -49,6 +49,6 @@ async function makeTests() {
         });
     }
     return results;
-};
+}
 
 export default makeTests;
