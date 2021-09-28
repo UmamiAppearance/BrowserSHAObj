@@ -7,12 +7,12 @@ export default {
         {   
             format: "iife",
             name: "BrowserSHAObj",
-            file: "dist/BrowserSHAObj.js"
+            file: "dist/BrowserSHAObj.iife.js"
         },
         {   
             format: "iife",
             name: "BrowserSHAObj",
-            file: "dist/BrowserSHAObj.min.js",
+            file: "dist/BrowserSHAObj.iife.min.js",
             plugins: [terser()]
         },
         {   
