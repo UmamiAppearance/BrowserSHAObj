@@ -34,10 +34,11 @@
   },
   "homepage": "https://github.com/UmamiAppearance/SHAHashObjectJS#readme",
   "dependencies": {
-    "base-ex": "^0.1.1"
+    "base-ex": "^0.3.0"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.5",
+    "eslint": "^7.32.0",
     "puppeteer": "^10.4.0",
     "rollup": "^2.57.0",
     "rollup-plugin-terser": "^7.0.2"
