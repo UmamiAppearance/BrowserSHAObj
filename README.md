@@ -123,4 +123,4 @@ sha256obj.toBase64();
 ```
 
 ## See it in action (demo page)
-To get a better idea of a possible use case, take a look at the [Demopage](https://umamiappearance.github.io/SHAHashObjectJS/demo.html).
+To get a better idea of a possible use case, take a look at the [Demopage](https://umamiappearance.github.io/BrowserSHAObj/demo.html).
