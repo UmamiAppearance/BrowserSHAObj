@@ -1,6 +1,6 @@
 import { BaseEx } from "../node_modules/base-ex/src/BaseEx.js";
-import BrowserSHAObj from "../src/main.js";
-BrowserSHAObj.prototype.baseEx = new BaseEx("bytes");
+import SHAObj from "../src/main.js";
+SHAObj.prototype.baseEx = new BaseEx("bytes");
 
 const makeTests = async () => {
 
@@ -36,7 +36,7 @@ const makeTests = async () => {
     let testedRepresentations = false;
 
     for (const algorithm of Object.keys(expectedOutputs)) {
-        const hashFN = new BrowserSHAObj(algorithm);
+        const hashFN = new SHAObj(algorithm);
         for (const type in testInput) {
             results.tests++;
             const input = testInput[type];

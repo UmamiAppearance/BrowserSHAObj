@@ -4,7 +4,7 @@ var BrowserSHAObj = (function () {
    /*
     * [BaseEx]{@link https://github.com/UmamiAppearance/BaseExJS}
     *
-    * @version 0.3.0
+    * @version 0.3.2
     * @author UmamiAppearance [mail@umamiappearance.eu]
     * @license GPL-3.0 AND BSD-3-Clause (Base91, Copyright (c) 2000-2006 Joachim Henke)
     */
@@ -74,6 +74,9 @@ var BrowserSHAObj = (function () {
            
            // Remove the leading 0x if present
            input = String(input).replace(/^0x/, '');
+
+           // Make it lower case
+           input = input.toLowerCase();
            
            // Ensure even number of characters
            if (input.length % 2) {
@@ -180,6 +183,9 @@ var BrowserSHAObj = (function () {
            args = this.utils.validateArgs(args);
            const version = this.utils.getVersion(args);
            const outputType = this.utils.setIOType(args, "out");
+
+           // Make it upper case
+           input = input.toUpperCase();
 
            // If the input is unpadded, pad it.
            const missingChars = input.length % 8;
@@ -1116,7 +1122,7 @@ var BrowserSHAObj = (function () {
     * @license GPL-3.0
     */
     
-   class BrowserSHAObj {
+   class SHAObj {
        /*
            Creates a SHA-(1-512) object, that holds an array
            of the output for the given algorithm. Multiple
@@ -1217,8 +1223,8 @@ var BrowserSHAObj = (function () {
     * esm-module for npm
     */
 
-   BrowserSHAObj.prototype.baseEx = new BaseEx("bytes");
+   SHAObj.prototype.baseEx = new BaseEx("bytes");
 
-   return BrowserSHAObj;
+   return SHAObj;
 
 })();

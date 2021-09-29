@@ -4,8 +4,8 @@
  */
 
 import {BaseEx} from "base-ex";
-import BrowserSHAObj from "./main.js"
+import SHAObj from "./main.js"
 
-BrowserSHAObj.prototype.baseEx = new BaseEx("bytes");
+SHAObj.prototype.baseEx = new BaseEx("bytes");
 
-export default BrowserSHAObj
+export default SHAObj

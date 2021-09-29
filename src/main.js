@@ -6,7 +6,7 @@
  * @license GPL-3.0
  */
  
-class BrowserSHAObj {
+class SHAObj {
     /*
         Creates a SHA-(1-512) object, that holds an array
         of the output for the given algorithm. Multiple
@@ -102,4 +102,4 @@ class BrowserSHAObj {
     }
 }
 
-export default BrowserSHAObj;
+export default SHAObj;

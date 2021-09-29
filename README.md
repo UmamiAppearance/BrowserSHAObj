@@ -41,7 +41,7 @@ Either way you have two builds available ([esm](https://developer.mozilla.org/en
 BrowserSHAObj is a ESM module and exported as _default_. Importing works as follows:
 ```js
 // esm
-import BrowserSHAObj from "./path/BrowserSHAObj.js";
+import SHAObj from "./path/BrowserSHAObj.js";
 ```
 ```html
 <!-- script tag -->
