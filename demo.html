@@ -313,7 +313,7 @@
                                 </select>
                             </p>
                             <p>
-                                <textarea @input="updateShasum" v-model="input" :disabled="txtInputDisabled" id="text-input" spellcheck="false" placeholder="enter string here..."></textarea>
+                                <textarea @input="updateShasum" v-model="input" :disabled="txtInputDisabled" id="text-input" spellcheck="false" placeholder="input goes here..."></textarea>
                                 <input @change="fileToBuffer":disabled="!txtInputDisabled" type="file" id="file-input" class="hidden-input">
                                 <label for="file-input">{{ fileLabel }}</label>
                             </p>
