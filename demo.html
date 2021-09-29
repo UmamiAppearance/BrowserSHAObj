@@ -10,7 +10,7 @@
         <title>BrowserSHAObj Demo Page (Online SHA Checksum Calculator)</title>
 
         <script type="module">
-            import BrowserSHAObj from "./dist/BrowserSHAObj.esm.min.js";
+            import SHAObj from "./dist/BrowserSHAObj.esm.min.js";
             import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.min.js"
             //import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js"
 
@@ -28,7 +28,7 @@
                 },
                 dataTypes: {
                     input: ["str", "bytes", "file"],
-                    algorithm: BrowserSHAObj.getAlgorithms(),
+                    algorithm: SHAObj.getAlgorithms(),
                 },
                 txtInputDisabled: false,
                 calculating: false,
@@ -44,7 +44,7 @@
             // generate an object, that holds instances of all available hashers
             const hashers = new Object();
             for (const sha of Data.dataTypes.algorithm) {
-                hashers[sha] = new BrowserSHAObj(sha);
+                hashers[sha] = new SHAObj(sha);
             }
 
             // generate the checksum for initial settings
@@ -185,7 +185,7 @@
                 height: 128px;
                 max-width: 380px;
                 width: 50vw;
-                min-width: 240px;
+                min-width: 280px;
             }
             div#hash-wrap {
                 display: flex;
