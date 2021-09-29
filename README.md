@@ -45,7 +45,7 @@ import SHAObj from "./path/BrowserSHAObj.esm.min.js";
 ```
 ```html
 <!-- script tag -->
-<script src="path/BrowserSHAObj.iife.min.js">
+<script src="path/BrowserSHAObj.iife.min.js"></script>
 ```
 
 ### Creating an instance

@@ -1,4 +1,4 @@
-var BrowserSHAObj = (function () {
+var SHAObj = (function () {
    'use strict';
 
    /*

@@ -6,23 +6,23 @@ export default {
     output: [ 
         {   
             format: "iife",
-            name: "BrowserSHAObj",
+            name: "SHAObj",
             file: "dist/BrowserSHAObj.iife.js"
         },
         {   
             format: "iife",
-            name: "BrowserSHAObj",
+            name: "SHAObj",
             file: "dist/BrowserSHAObj.iife.min.js",
             plugins: [terser()]
         },
         {   
             format: "es",
-            name: "BrowserSHAObj",
+            name: "SHAObj",
             file: "dist/BrowserSHAObj.esm.js"
         },
         {   
             format: "es",
-            name: "BrowserSHAObj",
+            name: "SHAObj",
             file: "dist/BrowserSHAObj.esm.min.js",
             plugins: [terser()]
         },
