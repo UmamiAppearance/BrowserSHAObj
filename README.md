@@ -81,7 +81,7 @@ const sha1obj = new SHAHashObj("SHA-1", "Hello World!");
 #### Returned Object
 The returned object holds a typed array (**UInt8**) of the digested hash buffer (``obj.array``). The message can be updated with ``obj.update(message)``. The call returns a _Promise_.  
   
-_``message`` accepts as input type:_
+``message`` accepts as input type:
 * **String**
 * **Typed Array**
 * **ArrayBuffer**
