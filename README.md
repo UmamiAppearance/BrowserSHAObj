@@ -41,7 +41,7 @@ Either way you have two builds available ([esm](https://developer.mozilla.org/en
 BrowserSHAObj is a ESM module and exported as _default_. Importing works as follows:
 ```js
 // esm
-import SHAObj from "./path/BrowserSHAObj.js";
+import SHAObj from "./path/BrowserSHAObj.esm.min.js";
 ```
 ```html
 <!-- script tag -->
@@ -66,15 +66,15 @@ The default for ``message`` is ``null`` (possible input types are described [her
 
 ```js
 // default, SHA-256, no message associated
-const sha256obj = new SHAHashObj();
+const sha256obj = new SHAObj();
 
 // SHA-512, no message associated
-const sha512obj = new SHAHashObj("SHA-512");
+const sha512obj = new SHAObj("SHA-512");
 
 // SHA-1, with message associated (Setting the message
 // during initialization makes it a synchronous call. 
 // You have been warned!)
-const sha1obj = new SHAHashObj("SHA-1", "Hello World!");
+const sha1obj = new SHAObj("SHA-1", "Hello World!");
 ```
 
 #### Returned Object
