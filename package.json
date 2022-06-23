@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/UmamiAppearance/SHAHashObjectJS.git"
+    "url": "git+https://github.com/UmamiAppearance/BrowserSHAObj.git"
   },
   "keywords": [
     "Browser",
@@ -26,10 +26,10 @@
   "author": "UmamiAppearance",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/UmamiAppearance/SHAHashObjectJS/issues",
+    "url": "https://github.com/UmamiAppearance/BrowserSHAObj/issues",
     "email": "mail@umamiappearance.eu"
   },
-  "homepage": "https://github.com/UmamiAppearance/SHAHashObjectJS#readme",
+  "homepage": "https://github.com/UmamiAppearance/BrowserSHAObj#readme",
   "dependencies": {
     "base-ex": "^0.3.2"
   },
