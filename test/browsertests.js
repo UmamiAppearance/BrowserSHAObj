@@ -1,4 +1,4 @@
-import { BaseEx } from "../node_modules/base-ex/src/BaseEx.js";
+import { BaseEx } from "../node_modules/base-ex/src/base-ex.js";
 import SHAObj from "../src/main.js";
 SHAObj.prototype.baseEx = new BaseEx("bytes");
 
@@ -10,7 +10,7 @@ const makeTests = async () => {
             output: output,
             expected: expected,
             unit: unit
-        }
+        };
     }
 
     const strInput = "Hello World!";
@@ -25,13 +25,13 @@ const makeTests = async () => {
         "SHA-256": "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
         "SHA-384": "bfd76c0ebbd006fee583410547c1887b0292be76d582d96c242d2a792723e3fd6fd061f9d5cfd13b8f961358e6adba4a",
         "SHA-512": "861844d6704e8573fec34d967e20bcfef3d424cf48be04e6dc08f2bd58c729743371015ead891cc3cf1c9d34b49264b510751b1ff9e537937bc46b5d6ff4ecc8"
-    }
+    };
 
     const results = {
         tests: 0,
         errors: 0,
         errorMessages: new Object()
-    }
+    };
 
     let testedRepresentations = false;
 
@@ -75,6 +75,6 @@ const makeTests = async () => {
     }
 
     return results;
-}
+};
 
 export default makeTests;

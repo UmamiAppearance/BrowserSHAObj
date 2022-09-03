@@ -1,7 +1,7 @@
 /*
  * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
  *
- * @version 0.1.4
+ * @version 0.1.5
  * @author UmamiAppearance [mail@umamiappearance.eu]
  * @license GPL-3.0
  */
@@ -77,10 +77,15 @@ class SHAObj {
         */
         if (this.hash.hasConverters) return;
 
+        const detach = (arr, str) => arr.splice(arr.indexOf(str), 1);
+
         const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
 
         this.hash.toHex = () => this.baseEx.base16.encode(this.hash.array);
-        const converters = Object.keys(this.baseEx).slice(1);
+        const converters = Object.keys(this.baseEx);
+        detach(converters, "base1");
+        detach(converters, "base16");
+        detach(converters, "simpleBase");
         for (const converter of converters) {
             this.hash[`to${capitalize(converter)}`] = () => this.baseEx[converter].encode(this.hash.array);
         }
