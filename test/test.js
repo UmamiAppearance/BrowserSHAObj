@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { test } from "no-bro-cote";
 
 test.addImport("import BrowserSHAObj from './dist/BrowserSHAObj.esm.min.js';")
