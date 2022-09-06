@@ -33,6 +33,7 @@ class SHAObj {
     */
 
     #algorithm = null;
+    #bits = null;
     #input = [];
 
     constructor(algorithm="SHA-256") {
@@ -43,30 +44,27 @@ class SHAObj {
         // everything is fine, even the bit value by itself
         // (like 384), as long as the numbers match to the
         // provided algorithms.
-        const bits = String(algorithm).match(/[0-9]+/)[0];
-        this.blockSize = bits|0 > 256 ? 64 : 128;
-        algorithm = `SHA-${bits}`;
+        this.#bits = String(algorithm).match(/[0-9]+/)[0]|0;
+        this.blockSize = this.#bits > 256 ? 128 : 64;
+        this.#algorithm = `SHA-${this.#bits}`;
 
-        if (!algorithms.has(algorithm)) {
-            throw new Error(`Invalid algorithm.\nValid arguments are: "${algorithms.join(", ")}".`);
+        if (this.#bits === 1) {
+            this.#bits = 160;
         }
 
-        this.#algorithm = algorithm;
+        if (!algorithms.has(this.#algorithm)) {
+            throw new TypeError(`Available algorithms are: '${Array.from(algorithms).join(", ")}'.`);
+        }
+
         this.digest = null;
         this.#addConverters();
     }
 
     static algorithmsAvailable() {
-        /*
-            return available algorithms
-        */
         return new Set(["SHA-1", "SHA-256", "SHA-384", "SHA-512"]);
     }
 
     static algorithmsGuaranteed() {
-        /*simpleBase
-            return available algorithms
-        */
         return this.constructor.algorithmsAvailable();
     }
 
@@ -79,7 +77,7 @@ class SHAObj {
     }
 
     get digestSize() {
-        return this.digest.byteLength;
+        return this.#bits / 8;
     }
 
     get name() {
@@ -87,9 +85,6 @@ class SHAObj {
     }
 
     async update(input, replace=false) {
-        /*
-            Digests the given input and stores an array from the hash buffer.
-        */
         input = baseEx.byteConverter.encode(input);
         
         if (replace) {
@@ -109,11 +104,11 @@ class SHAObj {
         return this.update(input, true);
     }
 
+    /**
+     * Appends BaseEx encoders to the returned object for the ability
+     * to covert the byte array of a hash to many representations.
+     */
     #addConverters() {
-        /*
-            Appends BaseEx encoders to the returned object for the ability
-            to covert the byte array of a hash to many representations.
-        */
         const detach = (arr, str) => arr.splice(arr.indexOf(str), 1);
 
         const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
@@ -125,19 +120,25 @@ class SHAObj {
             toSimpleBase: {}
         };
 
-        for (const converter in baseEx.simpleBase) {
-            this.basedigest.toSimpleBase[capitalize(converter)] = () => baseEx.simpleBase[converter].encode(this.digest);
-        }
-
-        this.basedigest.toBytes = () => baseEx.byteConverter.encode(this.digest);
-
         detach(converters, "base1");
         detach(converters, "byteConverter");
         detach(converters, "simpleBase");
 
         for (const converter of converters) {
-            this.basedigest[`to${capitalize(converter)}`] = () => baseEx[converter].encode(this.digest);
+            this.basedigest[`to${capitalize(converter)}`] = () => this.digest 
+                ? baseEx[converter].encode(this.digest)
+                : null;
         }
+
+        for (const converter in baseEx.simpleBase) {
+            this.basedigest.toSimpleBase[capitalize(converter)] = () => this.digest
+                ? baseEx.simpleBase[converter].encode(this.digest)
+                : null;
+        }
+
+        this.basedigest.toBytes = () => this.digest
+            ? baseEx.byteConverter.encode(this.digest)
+            : null;
     }
 }
 
