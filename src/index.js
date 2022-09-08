@@ -109,13 +109,16 @@ class SHAObj {
      * to covert the byte array of a hash to many representations.
      */
     #addConverters() {
+        
+        // helpers
         const detach = (arr, str) => arr.splice(arr.indexOf(str), 1);
-
         const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
 
-        this.hexdigest = () => baseEx.base16.encode(this.digest);
+
+        this.hexdigest = () => this.digest
+            ? baseEx.base16.encode(this.digest)
+            : null;
         const converters = Object.keys(baseEx);
-        
         this.basedigest = {
             toSimpleBase: {}
         };
