@@ -71,7 +71,7 @@
                 <article>
                     <h1>BrowserSHAObj- Live Examples</h1>
                     <p>
-                        Here you can find examples to demonstrate many features of <b>BrowserSHAObj/b>. You can run the code and also change it.
+                        Here you can find examples to demonstrate many features of <b>BrowserSHAObj</b>. You can run the code and also change it.
                         <br>
                         <i>(Also check out the <a href="./calculator.html">Online SHA Checksum Calculator</a>)</i>
                     </p>
@@ -92,7 +92,9 @@
                         <h1>Example</h1>
                         
                         <script data-run="true">
-                            const bso = new BrowserSHAObj();
+                            const sha1 = new BrowserSHAObj("SHA-1");
+                            await sha1.update("Hello World!!!");
+                            console.log(sha1.hexdigest());
                         </script>
                     </template>
                 </article>
