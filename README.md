@@ -45,8 +45,7 @@ import SHAObj from "./path/BrowserSHAObj.esm.min.js";
 <script src="path/BrowserSHAObj.iife.min.js"></script>
 ```
 
-### Creating an instance
-        
+### Creating an instance    
 The constructor takes one argument for the ``algorithm`` which is set to ``SHA-256`` by default. Available options are:
 * ``SHA-1``
 * ``SHA-256``
@@ -56,7 +55,6 @@ The constructor takes one argument for the ``algorithm`` which is set to ``SHA-2
 There a two possible methods available to create an instance:
 
 #### new operator
-
 ```js
 // default, SHA-256
 const sha256 = new SHAObj();
@@ -80,7 +78,9 @@ The method is asynchronous to allow you to associate a message in one go.
 const sha512 = await SHAObj.new("SHA-512", "Hello World!");
 ```
 
+
 ### Methods and Properties
+
 
 #### Static
 
@@ -90,11 +90,26 @@ A set containing the names of the hash algorithms that are available.
 ##### ``SHAObj.algorithmsGuaranteed()``
 Added for the sake of completeness in terms of compatibility with [pythons hashlib](https://docs.python.org/3/library/hashlib.html). Here it is pointing to [``algorithmsAvailable``](#shaobjalgorithmsavailable).
 
-##### ``SHAObj.new()``
-Asynchronously creates a new instance. Takes the ``algorithm`` as the first parameter, additionally an input can be provided as the second parameter, which gets passed to the [``update``}(#update) method.
+##### ``SHAObj.new(algorithm, input)``
+Asynchronously creates a new instance. Optionally takes the ``algorithm`` as the first parameter, also an optional input which can be provided as the second parameter, and gets passed to the [``update``](#update) method.
+
 
 #### Instance
 
+##### ``digest_size`` _(property)_
+The size of the resulting hash in bytes.
+
+##### ``block_size`` _(property)_
+The internal block size of the hash algorithm in bytes.
+
+##### ``name`` _(property)_
+The canonical name of this hash, always uppercase and always suitable as a parameter to create another hash of this type.
+
+##### ``update(input[, replace=false])``
+Update the hash object with almost any input. The input gets converted to a ``Uint8Array``. Unless ``replace`` is set to true, repeated calls are equivalent to a single call with the concatenation of all the arguments:  
+``shaObj.update(a)``; ``shaObj.update(b)`` is in many occasions equivalent to ``shaObj.update(a+b)``.  
+  
+_(Note: The process is a concatenation of bytes. Take as an exception for instance ``shaObj.update(1)``; ``shaObj.update(2)``, which is not the same as ``shaObj.update(1+2)``)_
 
 
 #### Examples for creating a new Object:

@@ -127,9 +127,11 @@ class SHAObj {
      * with the concatenation of all the arguments:
      * shaObj.update(a); shaObj.update(b) is in many occasions
      * equivalent to shaObj.update(a+b).
-     * (Note, that the process is a concatenation of bytes. Take
-     * for instance shaObj.update(1); shaObj.update(2) which is
-     * not the same as shaObj.update(1+2))
+     * 
+     * (Note: Rhe process is a concatenation of bytes. Take as
+     * an exception for instance:
+     * shaObj.update(1); shaObj.update(2) which is not the same
+     * as shaObj.update(1+2))
      * 
      * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest.
      * @param {*} replace - If true, the input is not concatenated with former input. 
