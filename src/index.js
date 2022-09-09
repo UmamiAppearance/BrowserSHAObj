@@ -168,7 +168,7 @@ class SHAObj {
         } 
 
         else {
-            console.warn("Input gets too big to safely store it in memory. It will get processed directly and wether stored nor concatenated to previous input. If the operation fails, it is due to memory issues.");
+            console.warn("Input gets too big to safely store it in memory. It will get processed directly and neither stored nor concatenated to previous input. If the operation fails, it is due to memory issues.");
             finalInput = input;
         }
 
