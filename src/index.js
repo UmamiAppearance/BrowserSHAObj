@@ -106,6 +106,21 @@ class SHAObj {
 
 
     /**
+     * Return a copy (“clone”) of the hash object. This can be
+     * used to efficiently compute the digests of data sharing
+     * a common initial substring.
+     * @returns {Object} - SHAObj instance.
+     */
+    async copy() {
+        const input = this.#input.length
+            ? Uint8Array.from(this.#input)
+            : null;
+
+        return SHAObj.new(this.#algorithm, input);
+    }
+
+
+    /**
      * Update the hash object with almost any input. The input
      * gets converted to a Uint8Array. Unless 'replace' is set
      * to true, repeated calls are equivalent to a single call
