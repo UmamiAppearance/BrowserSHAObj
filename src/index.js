@@ -8,6 +8,7 @@
 
 import { BaseEx } from "../../node_modules/base-ex/src/base-ex.js";
 
+const ALGORITHMS = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"];
 const BASE_EX = new BaseEx();
  
 
@@ -43,7 +44,7 @@ class SHAObj {
         this.#bits = Math.min(160, this.#bits);
 
         if (!algorithms.has(this.#algorithm)) {
-            throw new TypeError(`Available algorithms are: '${Array.from(algorithms).join(", ")}'.`);
+            throw new TypeError(`Available algorithms are: '${ALGORITHMS.join(", ")}'.`);
         }
 
         this.#addConverters();
@@ -56,7 +57,7 @@ class SHAObj {
      * @returns {set} - A set of available algorithms.
      */
     static algorithmsAvailable() {
-        return new Set(["SHA-1", "SHA-256", "SHA-384", "SHA-512"]);
+        return new Set(ALGORITHMS);
     }
 
 
