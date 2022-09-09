@@ -137,7 +137,7 @@
 
                         reader.addEventListener("load", function() {
                             console.log(this.result);
-                            hashers[Data.curTypes.algorithm].replace(this.result, false).then(() => {
+                            hashers[Data.curTypes.algorithm].replace(this.result).then(() => {
                                 Data.checksum = hashers[Data.curTypes.algorithm].hexdigest();
                                 Data.calculating = false;    
                             });

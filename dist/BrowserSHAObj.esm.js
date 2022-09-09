@@ -2688,26 +2688,43 @@ class SHAObj {
      * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest.
      * @param {*} replace - If true, the input is not concatenated with former input. 
      */
-    async update(input, bytesIn=false, replace=false) {
-        console.log(window.performance.memory.usedJSHeapSize);
+    async update(input, replace=false) {
         
-        if (!bytesIn) {
-            input = BASE_EX.byteConverter.encode(input);
-        }
-        console.log(window.performance.memory.usedJSHeapSize);
-        console.log("BX done");
-        
-        if (replace) {
-            this.#input = Array.from(input);
+        if (input instanceof ArrayBuffer) {
+            input = new Uint8Array(input);
+        } else if (ArrayBuffer.isView(input)) {
+            input = new Uint8Array(input.buffer);
         } else {
-            const tmp = Array.from(input);
-            this.#input = this.#input.concat(tmp);
+            input = BASE_EX.byteConverter.encode(input, "uint8");
         }
-        console.log(window.performance.memory.usedJSHeapSize);
-        console.log("concat");
+
+        let finalInput;
         
+        // 200 MB process limit for storing
+        if (input.byteLength < 200000000) {
+            
+            if (replace) {
+                this.#input = Array.from(input);
+            } else {
+                this.#input = this.#input.concat(Array.from(input));
+            }
+        
+            finalInput = Uint8Array.from(this.#input);
+
+            // 500+ MB of stored bytes warning
+            if (finalInput.byteLength > 500000000 && !this.warned) {
+                console.warn("The stored input is getting really big. Dependent from your environment this can lead to memory issues.");
+                this.warned = true;
+            } 
+        } 
+
+        else {
+            console.warn("Input gets too big to safely store it in memory. It will get processed directly and wether stored nor concatenated to previous input. If the operation fails, it is due to memory issues.");
+            finalInput = input;
+        }
+
         // hash the input
-        this.#digest = await window.crypto.subtle.digest(this.#algorithm, Uint8Array.from(this.#input));
+        this.#digest = await window.crypto.subtle.digest(this.#algorithm, finalInput);
     }
 
 
@@ -2715,8 +2732,8 @@ class SHAObj {
      * Shortcut to 'update(input, true)'.
      * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest. 
      */
-    async replace(input, bytesIn=false) {
-        this.update(input, bytesIn, true);
+    async replace(input) {
+        await this.update(input, true);
     }
 
 
