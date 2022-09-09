@@ -4,8 +4,7 @@
 [![npm](https://img.shields.io/npm/v/browser-sha-obj?color=%23009911&style=for-the-badge)](https://www.npmjs.com/package/browser-sha-obj)
 
 
-**BrowserSHAObj** creates a SHA-(1/256/384/512) object, that holds a typed array of the output for the given algorithm. The idea is to simplify the use of the build in ``Crypto.subtle`` methods for checksum generation of modern **browsers**.
-With the help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS), the checksum can be exported to multiple data [representations](#representations).
+**BrowserSHAObj** creates a SHA-(1/256/384/512) object. It is very closely related to [pythons hashlib](https://docs.python.org/3/library/hashlib.html) in its methods and features. It provides an easy access to the browsers ``Crypto.subtle`` method, and also makes it possible to get multiple different digest methods with a little help of [BaseEx](https://github.com/UmamiAppearance/BaseExJS).
 
 ## Installation
 
@@ -20,15 +19,13 @@ nmp install browser-sha-obj
 ```
 
 ## Builds
-The GitHub repository has ready to use builds included. You can find them in [dist](https://github.com/UmamiAppearance/BrowserSHAObj/tree/main/dist). The npm package comes without pre build files. 
-
-For building you have to run:
+You can find builds in [dist](https://github.com/UmamiAppearance/BrowserSHAObj/tree/main/dist). If you want to build by yourself run:
 
 ```sh
 npm run build
 ``` 
 
-Either way you have two builds available ([esm](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and [iife](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)), plus a minified version of each. 
+Two types are available ([esm](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and [iife](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)), plus a minified version of each. 
 * ``BrowserSHAObj.esm.js``
 * ``BrowserSHAObj.esm.min.js``
 * ``BrowserSHAObj.iife.js``

@@ -13,7 +13,7 @@ const BASE_EX = new BaseEx();
 
 /**
  * Creates a SHA-(1-512) object for the browser.
- * It is very closely related to the python hashlib
+ * It is very closely related to pythons hashlib
  * in its methods and features.
  * It provides an easy access to the browsers Crypto.subtle
  * method, and also makes it possible to get multiple
@@ -28,7 +28,7 @@ class SHAObj {
 
     /**
      * Creates a SHAObject.
-     * @param {string|number} algorithm - The parameter must contain one of the numbers (1/256/384/512), eg: SHA-1, sha256, 384, ... 
+     * @param {string|number} [algorithm="SHA-256"] - The parameter must contain one of the numbers (1/256/384/512), eg: SHA-1, sha256, 384, ... 
      */
     constructor(algorithm="SHA-256") {
 
