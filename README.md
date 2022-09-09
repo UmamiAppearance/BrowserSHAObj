@@ -84,13 +84,13 @@ const sha512 = await SHAObj.new("SHA-512", "Hello World!");
 
 #### Static
 
-##### ``SHAObj.algorithmsAvailable()``
+##### ``BrowserSHAObj.algorithmsAvailable()``
 A set containing the names of the hash algorithms that are available.
 
-##### ``SHAObj.algorithmsGuaranteed()``
-Added for the sake of completeness in terms of compatibility with [pythons hashlib](https://docs.python.org/3/library/hashlib.html). Here it is pointing to [``algorithmsAvailable``](#shaobjalgorithmsavailable).
+##### ``BrowserSHAObj.algorithmsGuaranteed()``
+Added for the sake of completeness in terms of compatibility with [pythons hashlib](https://docs.python.org/3/library/hashlib.html). Here it is simply pointing to [``algorithmsAvailable``](#browsershaobjalgorithmsavailable).
 
-##### ``SHAObj.new(algorithm, input)``
+##### ``BrowserSHAObj.new(algorithm, input)``
 Asynchronously creates a new instance. Optionally takes the ``algorithm`` as the first parameter, also an optional ``input`` which can be provided as the second parameter, and gets passed to the [``update``](#updateinput-replacefalse) method.
 
 

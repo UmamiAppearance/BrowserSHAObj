@@ -2567,7 +2567,7 @@ var SHAObj = (function () {
 
     /**
      * Creates a SHA-(1-512) object for the browser.
-     * It is very closely related to the python hashlib
+     * It is very closely related to pythons hashlib
      * in its methods and features.
      * It provides an easy access to the browsers Crypto.subtle
      * method, and also makes it possible to get multiple
@@ -2578,11 +2578,12 @@ var SHAObj = (function () {
 
         #algorithm = null;
         #bits = null;
+        #digest = null;
         #input = [];
 
         /**
          * Creates a SHAObject.
-         * @param {string|number} algorithm - The parameter must contain one of the numbers (1/256/384/512), eg: SHA-1, sha256, 384, ... 
+         * @param {string|number} [algorithm="SHA-256"] - The parameter must contain one of the numbers (1/256/384/512), eg: SHA-1, sha256, 384, ... 
          */
         constructor(algorithm="SHA-256") {
 
@@ -2599,7 +2600,6 @@ var SHAObj = (function () {
                 throw new TypeError(`Available algorithms are: '${Array.from(algorithms).join(", ")}'.`);
             }
 
-            this.digest = null;
             this.#addConverters();
         }
 
@@ -2660,15 +2660,32 @@ var SHAObj = (function () {
 
 
         /**
+         * Return a copy (“clone”) of the hash object. This can be
+         * used to efficiently compute the digests of data sharing
+         * a common initial substring.
+         * @returns {Object} - SHAObj instance.
+         */
+        async copy() {
+            const input = this.#input.length
+                ? Uint8Array.from(this.#input)
+                : null;
+
+            return SHAObj.new(this.#algorithm, input);
+        }
+
+
+        /**
          * Update the hash object with almost any input. The input
          * gets converted to a Uint8Array. Unless 'replace' is set
          * to true, repeated calls are equivalent to a single call
          * with the concatenation of all the arguments:
          * shaObj.update(a); shaObj.update(b) is in many occasions
          * equivalent to shaObj.update(a+b).
-         * (Note, that the process is a concatenation of bytes. Take
-         * for instance shaObj.update(1); shaObj.update(2) which is
-         * not the same as shaObj.update(1+2))
+         * 
+         * (Note: Rhe process is a concatenation of bytes. Take as
+         * an exception for instance:
+         * shaObj.update(1); shaObj.update(2) which is not the same
+         * as shaObj.update(1+2))
          * 
          * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest.
          * @param {*} replace - If true, the input is not concatenated with former input. 
@@ -2683,7 +2700,7 @@ var SHAObj = (function () {
             }
             
             // hash the input
-            this.digest = await window.crypto.subtle.digest(this.#algorithm, Uint8Array.from(this.#input));
+            this.#digest = await window.crypto.subtle.digest(this.#algorithm, Uint8Array.from(this.#input));
         }
 
 
@@ -2697,6 +2714,15 @@ var SHAObj = (function () {
 
 
         /**
+         * Returns the current digest as an ArrayBuffer;
+         * @returns {ArrayBuffer}
+         */
+        digest() {
+            return this.#digest;
+        }
+
+
+        /**
          * Appends BaseEx encoders to the returned object for the ability
          * to covert the byte array of a hash to many representations.
          */
@@ -2705,8 +2731,8 @@ var SHAObj = (function () {
             const detach = (arr, str) => arr.splice(arr.indexOf(str), 1);
             const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
 
-            this.hexdigest = () => this.digest
-                ? BASE_EX.base16.encode(this.digest)
+            this.hexdigest = () => this.#digest
+                ? BASE_EX.base16.encode(this.#digest)
                 : null;
             
             const converters = Object.keys(BASE_EX);
@@ -2719,19 +2745,19 @@ var SHAObj = (function () {
             detach(converters, "simpleBase");
 
             for (const converter of converters) {
-                this.basedigest[`to${capitalize(converter)}`] = () => this.digest 
-                    ? BASE_EX[converter].encode(this.digest)
+                this.basedigest[`to${capitalize(converter)}`] = () => this.#digest 
+                    ? BASE_EX[converter].encode(this.#digest)
                     : null;
             }
 
             for (const converter in BASE_EX.simpleBase) {
-                this.basedigest.toSimpleBase[capitalize(converter)] = () => this.digest
-                    ? BASE_EX.simpleBase[converter].encode(this.digest)
+                this.basedigest.toSimpleBase[capitalize(converter)] = () => this.#digest
+                    ? BASE_EX.simpleBase[converter].encode(this.#digest)
                     : null;
             }
 
-            this.basedigest.toBytes = () => this.digest
-                ? BASE_EX.byteConverter.encode(this.digest)
+            this.basedigest.toBytes = () => this.#digest
+                ? BASE_EX.byteConverter.encode(this.#digest)
                 : null;
         }
     }

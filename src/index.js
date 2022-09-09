@@ -24,6 +24,7 @@ class SHAObj {
 
     #algorithm = null;
     #bits = null;
+    #digest = null;
     #input = [];
 
     /**
@@ -45,7 +46,6 @@ class SHAObj {
             throw new TypeError(`Available algorithms are: '${Array.from(algorithms).join(", ")}'.`);
         }
 
-        this.digest = null;
         this.#addConverters();
     }
 
@@ -146,7 +146,7 @@ class SHAObj {
         }
         
         // hash the input
-        this.digest = await window.crypto.subtle.digest(this.#algorithm, Uint8Array.from(this.#input));
+        this.#digest = await window.crypto.subtle.digest(this.#algorithm, Uint8Array.from(this.#input));
     }
 
 
@@ -160,6 +160,15 @@ class SHAObj {
 
 
     /**
+     * Returns the current digest as an ArrayBuffer;
+     * @returns {ArrayBuffer}
+     */
+    digest() {
+        return this.#digest;
+    }
+
+
+    /**
      * Appends BaseEx encoders to the returned object for the ability
      * to covert the byte array of a hash to many representations.
      */
@@ -168,8 +177,8 @@ class SHAObj {
         const detach = (arr, str) => arr.splice(arr.indexOf(str), 1);
         const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
 
-        this.hexdigest = () => this.digest
-            ? BASE_EX.base16.encode(this.digest)
+        this.hexdigest = () => this.#digest
+            ? BASE_EX.base16.encode(this.#digest)
             : null;
         
         const converters = Object.keys(BASE_EX);
@@ -182,19 +191,19 @@ class SHAObj {
         detach(converters, "simpleBase");
 
         for (const converter of converters) {
-            this.basedigest[`to${capitalize(converter)}`] = () => this.digest 
-                ? BASE_EX[converter].encode(this.digest)
+            this.basedigest[`to${capitalize(converter)}`] = () => this.#digest 
+                ? BASE_EX[converter].encode(this.#digest)
                 : null;
         }
 
         for (const converter in BASE_EX.simpleBase) {
-            this.basedigest.toSimpleBase[capitalize(converter)] = () => this.digest
-                ? BASE_EX.simpleBase[converter].encode(this.digest)
+            this.basedigest.toSimpleBase[capitalize(converter)] = () => this.#digest
+                ? BASE_EX.simpleBase[converter].encode(this.#digest)
                 : null;
         }
 
-        this.basedigest.toBytes = () => this.digest
-            ? BASE_EX.byteConverter.encode(this.digest)
+        this.basedigest.toBytes = () => this.#digest
+            ? BASE_EX.byteConverter.encode(this.#digest)
             : null;
     }
 }
