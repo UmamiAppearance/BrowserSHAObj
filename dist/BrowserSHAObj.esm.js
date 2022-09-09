@@ -2559,49 +2559,38 @@ class BaseEx {
  * @license GPL-3.0
  */
 
-if (!BaseEx) {
-    throw new Error("BaseEx needs to be accessible.");
-}
-
-const baseEx = new BaseEx();
+const BASE_EX = new BaseEx();
  
-class SHAObj {
-    /*
-        Creates a SHA-(1-512) object, that holds an array
-        of the output for the given algorithm. Multiple
-        representations of the input-digest are available.
-        
-        Two arguments are taken by the constructor.
-            * algorithm
-            * input
-        
-        The input is set to "null" by default. If it is not
-        overwritten, the created object does not hold the processed
-        array of the input. This has the advantage, that any new
-        input can be called asynchronously and awaited for.
 
-        The algorithm is set to SHA-256 by default.
-    */
+/**
+ * Creates a SHA-(1-512) object for the browser.
+ * It is very closely related to the python hashlib
+ * in its methods and features.
+ * It provides an easy access to the browsers Crypto.subtle
+ * method, and also makes it possible to get multiple
+ * different digest methods.
+ * see: https://docs.python.org/3/library/hashlib.html
+ */
+class SHAObj {
 
     #algorithm = null;
     #bits = null;
     #input = [];
 
+    /**
+     * Creates a SHAObject.
+     * @param {string|number} algorithm - The parameter must contain one of the numbers (1/256/384/512), eg: SHA-1, sha256, 384, ... 
+     */
     constructor(algorithm="SHA-256") {
-        
-        const algorithms = this.constructor.algorithmsAvailable();
 
-        // Simplify the input for the user - sha1, Sha-256... 
-        // everything is fine, even the bit value by itself
-        // (like 384), as long as the numbers match to the
-        // provided algorithms.
+        const algorithms = this.constructor.algorithmsAvailable();
+        
         this.#bits = String(algorithm).match(/[0-9]+/)[0]|0;
         this.blockSize = this.#bits > 256 ? 128 : 64;
         this.#algorithm = `SHA-${this.#bits}`;
 
-        if (this.#bits === 1) {
-            this.#bits = 160;
-        }
+        // convert sha1 to its actual 160 bits
+        this.#bits = Math.min(160, this.#bits);
 
         if (!algorithms.has(this.#algorithm)) {
             throw new TypeError(`Available algorithms are: '${Array.from(algorithms).join(", ")}'.`);
@@ -2611,14 +2600,35 @@ class SHAObj {
         this.#addConverters();
     }
 
+
+    /**
+     * Static method to receive information about the 
+     * available algorithms.
+     * @returns {set} - A set of available algorithms.
+     */
     static algorithmsAvailable() {
         return new Set(["SHA-1", "SHA-256", "SHA-384", "SHA-512"]);
     }
 
+
+    /**
+     * Added for the sake of completeness in terms
+     * of compatibility with pythons hashlib. Here
+     * it is pointing to 'algorithmsAvailable'.
+     * @returns {set} - A set of available algorithms.
+     */
     static algorithmsGuaranteed() {
         return this.constructor.algorithmsAvailable();
     }
 
+    /**
+     * Asynchronously creates a new instance.
+     * Additionally an input can be provided, which 
+     * gets passed to the 'update' method.
+     * @param {string|number} algorithm - The parameter must contain one of the numbers (1/256/384/512), eg: SHA-1, sha256, 384, ... 
+     * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest. 
+     * @returns {Object} - A SHAObj instance.
+     */
     static async new(algorithm="SHA-256", input=null) {
         const shaObj = new SHAObj(algorithm);
         if (input !== null) {
@@ -2627,16 +2637,41 @@ class SHAObj {
         return shaObj;
     }
 
+
+    /***
+     * The size of the resulting hash in bytes.
+     */
     get digestSize() {
         return this.#bits / 8;
     }
 
+
+    /**
+     * The canonical name of this hash, always uppercase and
+     * always suitable as a parameter to create another hash
+     * of this type.
+     */
     get name() {
         return this.#algorithm;
     }
 
+
+    /**
+     * Update the hash object with almost any input. The input
+     * gets converted to a Uint8Array. Unless 'replace' is set
+     * to true, repeated calls are equivalent to a single call
+     * with the concatenation of all the arguments:
+     * shaObj.update(a); shaObj.update(b) is in many occasions
+     * equivalent to shaObj.update(a+b).
+     * (Note, that the process is a concatenation of bytes. Take
+     * for instance shaObj.update(1); shaObj.update(2) which is
+     * not the same as shaObj.update(1+2))
+     * 
+     * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest.
+     * @param {*} replace - If true, the input is not concatenated with former input. 
+     */
     async update(input, replace=false) {
-        input = baseEx.byteConverter.encode(input);
+        input = BASE_EX.byteConverter.encode(input);
         
         if (replace) {
             this.#input = Array.from(input);
@@ -2644,29 +2679,34 @@ class SHAObj {
             this.#input.push(...input);
         }
         
-        
         // hash the input
         this.digest = await window.crypto.subtle.digest(this.#algorithm, Uint8Array.from(this.#input));
-        
-        return true;
     }
 
+
+    /**
+     * Shortcut to 'update(input, true)'.
+     * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest. 
+     */
     async replace(input) {
-        return this.update(input, true);
+        this.update(input, true);
     }
+
 
     /**
      * Appends BaseEx encoders to the returned object for the ability
      * to covert the byte array of a hash to many representations.
      */
     #addConverters() {
+        
         const detach = (arr, str) => arr.splice(arr.indexOf(str), 1);
-
         const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
 
-        this.hexdigest = () => baseEx.base16.encode(this.digest);
-        const converters = Object.keys(baseEx);
+        this.hexdigest = () => this.digest
+            ? BASE_EX.base16.encode(this.digest)
+            : null;
         
+        const converters = Object.keys(BASE_EX);
         this.basedigest = {
             toSimpleBase: {}
         };
@@ -2677,18 +2717,18 @@ class SHAObj {
 
         for (const converter of converters) {
             this.basedigest[`to${capitalize(converter)}`] = () => this.digest 
-                ? baseEx[converter].encode(this.digest)
+                ? BASE_EX[converter].encode(this.digest)
                 : null;
         }
 
-        for (const converter in baseEx.simpleBase) {
+        for (const converter in BASE_EX.simpleBase) {
             this.basedigest.toSimpleBase[capitalize(converter)] = () => this.digest
-                ? baseEx.simpleBase[converter].encode(this.digest)
+                ? BASE_EX.simpleBase[converter].encode(this.digest)
                 : null;
         }
 
         this.basedigest.toBytes = () => this.digest
-            ? baseEx.byteConverter.encode(this.digest)
+            ? BASE_EX.byteConverter.encode(this.digest)
             : null;
     }
 }

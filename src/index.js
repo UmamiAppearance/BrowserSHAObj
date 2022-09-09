@@ -31,9 +31,9 @@ class SHAObj {
      * @param {string|number} algorithm - The parameter must contain one of the numbers (1/256/384/512), eg: SHA-1, sha256, 384, ... 
      */
     constructor(algorithm="SHA-256") {
-        algorithms
+
         const algorithms = this.constructor.algorithmsAvailable();
-        algorithms
+        
         this.#bits = String(algorithm).match(/[0-9]+/)[0]|0;
         this.blockSize = this.#bits > 256 ? 128 : 64;
         this.#algorithm = `SHA-${this.#bits}`;
