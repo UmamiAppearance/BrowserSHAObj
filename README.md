@@ -47,27 +47,59 @@ import SHAObj from "./path/BrowserSHAObj.esm.min.js";
 
 ### Creating an instance
         
-Two arguments are taken by the constructor:
-* ``algorithm`` (default: SHA-256)
-* ``message`` (default: null)
-
-The ``algorithm`` is set to ``SHA-256`` by default. Available options are:
+The constructor takes one argument for the ``algorithm`` which is set to ``SHA-256`` by default. Available options are:
 * ``SHA-1``
 * ``SHA-256``
 * ``SHA-384``
 * ``SHA-512``
 
-The default for ``message`` is ``null`` (possible input types are described [here](#returned-object)). If it is not overwritten the created object does not hold a digested array of a message input (yet). This has the advantage, that any (new) input update can be called asynchronously and ``await``ed for.
+There a two possible methods available to create an instance:
+
+#### new operator
+
+```js
+// default, SHA-256
+const sha256 = new SHAObj();
+
+// SHA-512
+const sha512 = new SHAObj("SHA-512");
+```
+
+#### new method
+```js
+// default, SHA-256
+const sha256 = await SHAObj.new();
+
+// SHA-512
+const sha512 = await SHAObj.new("SHA-512");
+```
+
+The method is asynchronous to allow you to associate a message in one go.
+```js
+// SHA-512
+const sha512 = await SHAObj.new("SHA-512", "Hello World!");
+```
+
+### Methods and Properties
+
+#### Static
+
+##### ``SHAObj.algorithmsAvailable()``
+A set containing the names of the hash algorithms that are available.
+
+##### ``SHAObj.algorithmsGuaranteed()``
+Added for the sake of completeness in terms of compatibility with [pythons hashlib](https://docs.python.org/3/library/hashlib.html). Here it is pointing to [``algorithmsAvailable``](#shaobjalgorithmsavailable).
+
+##### ``SHAObj.new()``
+Asynchronously creates a new instance. Takes the ``algorithm`` as the first parameter, additionally an input can be provided as the second parameter, which gets passed to the [``update``}(#update) method.
+
+#### Instance
+
+
 
 #### Examples for creating a new Object:
 
 ```js
-// default, SHA-256, no message associated
-const sha256obj = new SHAObj();
-
-// SHA-512, no message associated
-const sha512obj = new SHAObj("SHA-512");
-
 // SHA-1, with message associated (Setting the message
 // during initialization makes it a synchronous call. 
 // You have been warned!)
