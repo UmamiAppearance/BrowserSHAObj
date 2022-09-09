@@ -46,7 +46,7 @@ test.makeUnit(
 );
 
 test.makeUnit(
-    "Concatention, via update method",
+    "Concatenation via update method",
     "2ef7bde608ce5404e97d5f042f95f89f1c232871",
     async () => {
         const shaObj = await BrowserSHAObj.new("SHA-1", "Hello");
@@ -62,6 +62,38 @@ test.makeUnit(
         const shaObj = await BrowserSHAObj.new("SHA-256", input);
         const clone = await shaObj.copy();
         return clone.hexdigest();
+    },
+    INPUT
+);
+
+
+test.makeUnit(
+    "Base32 (RFC4648) representation",
+    "fu1r2pbvu7u57e9do60kh8embnu2qiovkfb7ea2arn9004jdi1kg====",
+    async (input) => {
+        const shaObj = await BrowserSHAObj.new("SHA-256", input);
+        return shaObj.basedigest.toBase32_rfc4648();
+    },
+    INPUT
+);
+
+test.makeUnit(
+    "SimpleBase36 representation",
+    "qcgdk901kmt98k7fll33t5irv2tqqgkh0e15msl7v7hftir30rv",
+    async (input) => {
+        const shaObj = await BrowserSHAObj.new("SHA-256", input);
+        return shaObj.basedigest.toSimpleBase.Base32();
+    },
+    INPUT
+);
+
+
+test.makeUnit(
+    "Bytes representation",
+    "127,131,177,101,127,241,252,83,185,45,193,129,72,161,214,93,252,45,75,31,163,214,119,40,74,221,210,0,18,109,144,105",
+    async (input) => {
+        const shaObj = await BrowserSHAObj.new("SHA-256", input);
+        return shaObj.basedigest.toBytes().toString();
     },
     INPUT
 );
