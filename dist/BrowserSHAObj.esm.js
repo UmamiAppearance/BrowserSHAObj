@@ -2688,14 +2688,23 @@ class SHAObj {
      * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest.
      * @param {*} replace - If true, the input is not concatenated with former input. 
      */
-    async update(input, replace=false) {
-        input = BASE_EX.byteConverter.encode(input);
+    async update(input, bytesIn=false, replace=false) {
+        console.log(window.performance.memory.usedJSHeapSize);
+        
+        if (!bytesIn) {
+            input = BASE_EX.byteConverter.encode(input);
+        }
+        console.log(window.performance.memory.usedJSHeapSize);
+        console.log("BX done");
         
         if (replace) {
             this.#input = Array.from(input);
         } else {
-            this.#input.push(...input);
+            const tmp = Array.from(input);
+            this.#input = this.#input.concat(tmp);
         }
+        console.log(window.performance.memory.usedJSHeapSize);
+        console.log("concat");
         
         // hash the input
         this.#digest = await window.crypto.subtle.digest(this.#algorithm, Uint8Array.from(this.#input));
@@ -2706,8 +2715,8 @@ class SHAObj {
      * Shortcut to 'update(input, true)'.
      * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest. 
      */
-    async replace(input) {
-        this.update(input, true);
+    async replace(input, bytesIn=false) {
+        this.update(input, bytesIn, true);
     }
 
 

@@ -5,12 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="#">
         
-        <link href="https://umamiappearance.github.io/MSG/MSG.css" rel="stylesheet">
+        <!--<link href="https://umamiappearance.github.io/MSG/MSG.css" rel="stylesheet">-->
 
         <title>BrowserSHAObj - Online SHA Checksum Calculator</title>
 
         <script type="module">
-            import SHAObj from "../../dist/BrowserSHAObj.esm.min.js";
+            //import SHAObj from "../../dist/BrowserSHAObj.esm.min.js";
+            import SHAObj from "../../src/index.js";
             import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.min.js"
             //import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js"
 
@@ -28,7 +29,7 @@
                 },
                 dataTypes: {
                     input: ["str", "bytes", "file"],
-                    algorithm: SHAObj.getAlgorithms(),
+                    algorithm: SHAObj.algorithmsAvailable(),
                 },
                 txtInputDisabled: false,
                 calculating: false,
@@ -48,8 +49,10 @@
             }
 
             // generate the checksum for initial settings
-            hashers[Data.curTypes.algorithm].update(Data.input).then(
-                () => Data.checksum = hashers[Data.curTypes.algorithm].toHex()
+            hashers[Data.curTypes.algorithm].replace(Data.input, true).then(
+                () => {
+                    Data.checksum = hashers[Data.curTypes.algorithm].hexdigest();
+                }
             );
 
             
@@ -104,8 +107,8 @@
                         set: function(val) {
                             this.curTypes.algorithm = val;
                             if (this.inputType !== "file") {
-                                hashers[val].update(this.input).then(() => 
-                                    this.checksum = hashers[val].toHex()
+                                hashers[val].replace(this.input).then(() => 
+                                    this.checksum = hashers[val].hexdigest()
                                 );
                             } else {
                                 if (this.inputFile) {
@@ -122,8 +125,8 @@
                 methods: {
                     updateShasum: function() {
                         const input = (this.inputType === "bytes") ? byteConverter.toUint(this.input) : this.input;
-                        hashers[this.algorithm].update(input).then(() => 
-                            this.checksum = hashers[this.algorithm].toHex()
+                        hashers[this.algorithm].replace(input).then(() => 
+                            this.checksum = hashers[this.algorithm].hexdigest()
                         );
                     },
                     fileToBuffer: function(e) {
@@ -133,8 +136,9 @@
                         this.calculating = true;
 
                         reader.addEventListener("load", function() {
-                            hashers[Data.curTypes.algorithm].update(this.result).then(() => {
-                                Data.checksum = hashers[Data.curTypes.algorithm].toHex();
+                            console.log(this.result);
+                            hashers[Data.curTypes.algorithm].replace(this.result, false).then(() => {
+                                Data.checksum = hashers[Data.curTypes.algorithm].hexdigest();
                                 Data.calculating = false;    
                             });
                         }, false);
