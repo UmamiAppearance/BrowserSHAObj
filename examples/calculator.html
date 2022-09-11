@@ -49,16 +49,9 @@
                 hashers[sha] = new SHAObj(sha);
             }
 
-            // generate the checksum for initial settings
-            hashers[Data.curTypes.algorithm].replace(Data.input, true).then(
-                () => {
-                    Data.checksum = hashers[Data.curTypes.algorithm].hexdigest();
-                }
-            );
-
             
-// vue definitions
-            const app = createApp({
+            // vue definitions
+            window.app = createApp({
                 data() {
                     return Data;
                 },
@@ -155,17 +148,19 @@
                             copied.classList.remove("show");
                         }, 1500)
                     },
+                },
+
+                // generate the checksum for initial settings
+                mounted() {
+                    hashers[Data.curTypes.algorithm].replace(Data.input).then(
+                        () => {
+                            this.checksum = hashers[Data.curTypes.algorithm].hexdigest();
+                        }
+                    );
                 }
             });
 
             app.mount("#calculator");
-        </script>
-        <script>
-            if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-                window.addEventListener("load", () => {
-                    if (!window.importPossible) alert("Could not find an available build file. Execute 'npm run build' first.");
-                }, false);
-            }
         </script>
     
 
@@ -309,8 +304,8 @@
 
     <!-- Input section -->
 
-            <section>
-                <article id="calculator" v-bind:class="{ processing: calculating }">
+            <section id="calculator">
+                <article v-bind:class="{ processing: calculating }">
                     <h3>Calculator</h3>
                     <div>
                         <form>
