@@ -2554,7 +2554,7 @@ class BaseEx {
 /*
  * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
  *
- * @version 0.1.5
+ * @version 0.2.0
  * @author UmamiAppearance [mail@umamiappearance.eu]
  * @license GPL-3.0
  */
@@ -2728,18 +2728,36 @@ class SHAObj {
     }
 
 
-        const detach = (arr, str) => arr.splice(arr.indexOf(str), 1);
+    /**
+     * Shortcut to 'update(input, true)'.
+     * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest. 
+     */
+    async replace(input) {
+        await this.update(input, true);
+    }
 
+
+    /**
+     * Returns the current digest as an ArrayBuffer;
+     * @returns {ArrayBuffer}
+     */
+    digest() {
+        return this.#digest;
+    }
+
+
+    /**
+     * Appends BaseEx encoders to the returned object for the ability
+     * to covert the byte array of a hash to many representations.
+     */
+    #addConverters() {
+        
+        const detach = (arr, str) => arr.splice(arr.indexOf(str), 1);
         const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
 
-        this.hash.toHex = () => this.baseEx.base16.encode(this.hash.array);
-        const converters = Object.keys(this.baseEx);
-        detach(converters, "base1");
-        detach(converters, "base16");
-        detach(converters, "simpleBase");
-        for (const converter of converters) {
-            this.hash[`to${capitalize(converter)}`] = () => this.baseEx[converter].encode(this.hash.array);
-        }
+        this.hexdigest = () => this.#digest
+            ? BASE_EX.base16.encode(this.#digest)
+            : null;
         
         const converters = Object.keys(BASE_EX);
         this.basedigest = {
