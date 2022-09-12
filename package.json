@@ -7,8 +7,8 @@
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint ./src/*",
-    "lint:fix": "eslint ./src/* --fix",
-    "test": "node test/node.mjs"
+    "start": "http-server -a localhost -o ./examples/live-examples.html",
+    "test": "no-bro-cote"
   },
   "repository": {
     "type": "git",
@@ -31,9 +31,6 @@
     "email": "mail@umamiappearance.eu"
   },
   "homepage": "https://github.com/UmamiAppearance/BrowserSHAObj#readme",
-  "dependencies": {
-    "base-ex": "^0.3.2"
-  },
   "devDependencies": {
     "base-ex": "^0.4.0",
     "eslint": "^8.23.1",
