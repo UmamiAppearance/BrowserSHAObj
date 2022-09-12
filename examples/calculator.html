@@ -10,13 +10,12 @@
         <title>BrowserSHAObj - Online SHA Checksum Calculator</title>
 
         <script type="module">
-            //import SHAObj from "../../dist/BrowserSHAObj.esm.min.js";
-            import SHAObj from "../../src/index.js";
+            //import BrowserSHAObj from "../../src/index.js";
+            import BrowserSHAObj from "../../dist/BrowserSHAObj.esm.min.js";
             
-            //import { createApp } from "https://cdn.jsdelivr.net/npm/vue@3.2.39/dist/vue.esm-browser.prod.js";
-            import { createApp } from "https://cdn.jsdelivr.net/npm/vue@3.2.39/dist/vue.esm-browser.js";
+            import { createApp } from "https://cdn.jsdelivr.net/npm/vue@3.2.39/dist/vue.esm-browser.prod.js";
+            //import { createApp } from "https://cdn.jsdelivr.net/npm/vue@3.2.39/dist/vue.esm-browser.js";
 
-            window.importPossible = true;
 
             // Data object (source of truth) for Vue
             let nonFileInput;
@@ -30,7 +29,7 @@
                 },
                 dataTypes: {
                     input: ["str", "bytes", "file"],
-                    algorithm: SHAObj.algorithmsAvailable(),
+                    algorithm: BrowserSHAObj.algorithmsAvailable(),
                 },
                 txtInputDisabled: false,
                 calculating: false,
@@ -46,12 +45,12 @@
             // generate an object, that holds instances of all available hashers
             const hashers = new Object();
             for (const sha of Data.dataTypes.algorithm) {
-                hashers[sha] = new SHAObj(sha);
+                hashers[sha] = new BrowserSHAObj(sha);
             }
 
             
             // vue definitions
-            window.app = createApp({
+            const app = createApp({
                 data() {
                     return Data;
                 },
@@ -294,10 +293,11 @@
     <!-- Head of body -->
             
                 <article>
-                    <h1>BrowserSHAObj Demo Page (Online SHA Checksum Calculator)</h1>
+                    <h1>Online SHA Checksum Calculator</h1>
                     <p>
                         This demo page should illustrate the capabilities of using <a href="https://github.com/UmamiAppearance/BrowserSHAObj">BrowserSHAObj</a> in an application.
                     </p>
+                    <i>(If you want to learn how to use, check out the <a href="./live-examples.html">Live Examples</a>).</i>
                 </article>
 
             </section>

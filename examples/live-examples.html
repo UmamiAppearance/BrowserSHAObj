@@ -9,19 +9,49 @@
         <link href="https://umamiappearance.github.io/MSG/MSG.css" rel="stylesheet">
         
         <script type="module">
-            import BrowserSHAObj from "../src/index.js";
+            //import BrowserSHAObj from "../src/index.js";
+            import BrowserSHAObj from "../../dist/BrowserSHAObj.esm.min.js";
+
             window.BrowserSHAObj = BrowserSHAObj;
             import liveExamples from "https://umamiappearance.github.io/JSLiveExamples/dist/js-live-examples.esm.min.js";
+       
+            document.addEventListener("DOMContentLoaded", () => {
+                const reprList = document.querySelector("#repr-list");
+
+                const shaObj = new BrowserSHAObj();
+                const representations = Object.keys(shaObj.basedigest);
+                representations.splice(representations.indexOf("toSimpleBase"), 1);
+                
+                representations.forEach(repr => {
+                    const li = document.createElement("li");
+                    li.textContent = repr + "()";
+                    reprList.append(li);
+                });
+
+                const simpleBaseLi = document.createElement("li");
+                simpleBaseLi.textContent = "toSimpleBase:"
+                const simpleBase = document.createElement("ul");
+                for (const sbRepr in shaObj.basedigest.toSimpleBase) {
+                    const li = document.createElement("li");
+                    li.textContent = sbRepr + "()";
+                    simpleBase.append(li);
+                }
+                simpleBaseLi.append(simpleBase);
+                reprList.append(simpleBaseLi);
+
+
+
+            }, false);
         </script>
 
 <!-- CSS -->
 
         <style>
-            span.math {
+            .math li {
                 font-family: monospace;
                 font-style: normal;
                 font-weight: 500;
-                font-size: 130%;
+                font-size: 1rem;
             }
             h3 {
                 font-size: 1.1em;
@@ -69,15 +99,15 @@
             <section>
 
                 <article>
-                    <h1>BrowserSHAObj- Live Examples</h1>
+                    <h1>BrowserSHAObj - Live Examples</h1>
                     <p>
                         Here you can find examples to demonstrate many features of <b>BrowserSHAObj</b>. You can run the code and also change it.
                         <br>
-                        <i>(Also check out the <a href="./calculator.html">Online SHA Checksum Calculator</a>)</i>
+                        <i>(Also check out the <a href="./calculator.html">Online SHA Checksum Calculator</a>), to see BrowserSHAObj operate in a real application.</i>
                     </p>
                     
                     <p>
-                        In every example you have global access to the BrowserSHAObj - constructor.
+                        In every example you have global access to the <b>BrowserSHAObj</b> - constructor.
                     </p>
                 </article>
 
@@ -87,14 +117,72 @@
 
             <section id="examples">
                 <article>
-                    <h3>&#9755; Title</h3>
                     <template class="live-example">
-                        <h1>Example</h1>
+                        <h1>Creating instances, with different algorithms.</h1>
                         
                         <script data-run="true">
                             const sha1 = new BrowserSHAObj("SHA-1");
                             await sha1.update("Hello World!!!");
-                            console.log(sha1.hexdigest());
+                            console.log("SHA-1:  ", sha1.hexdigest());
+
+                            const sha256 = new BrowserSHAObj(); // (sha256 is the default algorithm)
+                            await sha256.update("Hello World!!!");
+                            console.log("SHA-256:", sha256.hexdigest());
+
+                            const sha384 = await BrowserSHAObj.new("SHA-384");
+                            await sha384.update("Hello World!!!");
+                            console.log("SHA-384:", sha384.hexdigest());
+
+                            const sha512 = await BrowserSHAObj.new(
+                                "SHA-512",
+                                "Hello World!!!"
+                            );
+                            console.log("SHA-512:", sha512.hexdigest());
+                        </script>
+                    </template>
+                </article>
+
+                <article>
+                    <h3>&#9755; shaObj.update(a); shaObj.update(b) is in many occasions equivalent to shaObj.update(a+b)</h3>
+                    <template class="live-example">
+                        <h1>.update() & byte concatenation</h1>
+                        
+                        <script data-run="true">
+                            // True for concatenation:
+                            const shaObjA = await BrowserSHAObj.new("SHA-1", "Hello");
+                            await shaObjA.update(" World!!!");
+                            const shaObjB = await BrowserSHAObj.new("SHA-1", "Hello World!!!");
+                            console.log(shaObjA.hexdigest(), "≙", shaObjB.hexdigest());
+
+                            // Not true for mathematical operations:
+                            const shaObjC = await BrowserSHAObj.new("SHA-1", 1);
+                            await shaObjC.update(2);
+                            const shaObjD = await BrowserSHAObj.new("SHA-1", 1+2);
+                            console.log(shaObjC.hexdigest(), "≠", shaObjD.hexdigest());
+                        </script>
+                    </template>
+                </article>
+
+                <article id="base-representations">
+                    <h3>&#9755; There are plenty of representation available:</h3>
+                    <ul id="repr-list" class="math"></ul>
+                    <template class="live-example">
+                        <h1>Base Representations</h1>
+                        
+                        <script data-run="true">
+                            const reprObj = await BrowserSHAObj.new("SHA-1", "Hello World!!!");
+                            console.log(
+                                "toBytes:",
+                                reprObj.basedigest.toBytes()
+                            );
+                            console.log(
+                                "toBase64:",
+                                reprObj.basedigest.toBase64()
+                            );
+                            console.log(
+                                "toSimpleBase.Base6:",
+                                reprObj.basedigest.toSimpleBase.Base6()
+                            );
                         </script>
                     </template>
                 </article>
