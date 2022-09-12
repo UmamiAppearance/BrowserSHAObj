@@ -1,4 +1,4 @@
-var SHAObj = (function () {
+var BrowserSHAObj = (function () {
     'use strict';
 
     /**
@@ -2557,7 +2557,7 @@ var SHAObj = (function () {
     /*
      * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
      *
-     * @version 0.2.0
+     * @version 0.2.1
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
@@ -2575,7 +2575,7 @@ var SHAObj = (function () {
      * different digest methods.
      * see: https://docs.python.org/3/library/hashlib.html
      */
-    class SHAObj {
+    class BrowserSHAObj {
 
         #algorithm = null;
         #bits = null;
@@ -2634,7 +2634,7 @@ var SHAObj = (function () {
          * @returns {Object} - A SHAObj instance.
          */
         static async new(algorithm="SHA-256", input=null) {
-            const shaObj = new SHAObj(algorithm);
+            const shaObj = new BrowserSHAObj(algorithm);
             if (input !== null) {
                 await shaObj.update(input);
             }
@@ -2671,7 +2671,7 @@ var SHAObj = (function () {
                 ? Uint8Array.from(this.#input)
                 : null;
 
-            return SHAObj.new(this.#algorithm, input);
+            return BrowserSHAObj.new(this.#algorithm, input);
         }
 
 
@@ -2789,6 +2789,6 @@ var SHAObj = (function () {
         }
     }
 
-    return SHAObj;
+    return BrowserSHAObj;
 
 })();
