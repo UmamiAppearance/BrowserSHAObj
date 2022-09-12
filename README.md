@@ -130,7 +130,7 @@ Async method to return a copy/clone of the hash object. This can be used to effi
 
 
 ## Examples
-[Here](https://umamiappearance.github.io/BrowserSHAObj/examples/live-examples.html) you can find many live-examples. To get a better idea of a possible use case, take a look at the [Demopage](https://umamiappearance.github.io/BrowserSHAObj/examples/calculator.html).
+[Here](https://umamiappearance.github.io/BrowserSHAObj/examples/live-examples.html) you can find many live-examples. To get a better idea of a possible use case, take a look at the [Online SHA Checksum Calculator](https://umamiappearance.github.io/BrowserSHAObj/examples/calculator.html).
 
 
 ## License
