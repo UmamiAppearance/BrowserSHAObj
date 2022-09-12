@@ -1,4 +1,4 @@
-import { nodeResolve } from "@rollup/plugin-node-resolve";
+import { importManager } from "rollup-plugin-import-manager";
 import { terser } from "rollup-plugin-terser";
 
 export default {
@@ -27,5 +27,18 @@ export default {
             plugins: [terser()]
         },
     ],
-    plugins: [nodeResolve()]
+    plugins: [
+        importManager({
+            units: [
+                {
+                    file: "**/index.js",
+                    module: "base-ex",
+                    actions: {
+                        select: "module",
+                        rename: "../node_modules/base-ex/src/base-ex.js"
+                    }
+                }
+            ]
+        })
+    ]
 };
