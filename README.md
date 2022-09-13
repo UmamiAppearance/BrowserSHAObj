@@ -38,10 +38,10 @@ Two types are available ([esm](https://developer.mozilla.org/en-US/docs/Web/Java
 BrowserSHAObj is a ESM module and exported as _default_. Importing works as follows:
 ```js
 // esm
-import SHAObj from "./path/BrowserSHAObj.esm.min.js";
+import BrowserSHAObj from "./path/BrowserSHAObj.esm.min.js";
 
 // esm from CDN (jsdelivr)
-import SHAObj from "https://cdn.jsdelivr.net/npm/browser-sha-obj@latest/dist/BrowserSHAObj.esm.min.js"
+import BrowseSHAObj from "https://cdn.jsdelivr.net/npm/browser-sha-obj@latest/dist/BrowserSHAObj.esm.min.js"
 ```
 
 ```html
