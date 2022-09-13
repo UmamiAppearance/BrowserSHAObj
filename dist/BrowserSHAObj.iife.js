@@ -276,7 +276,7 @@ var BrowserSHAObj = (function () {
             else if (Array.isArray(input)) {
                 const collection = new Array();
                 for (const elem of input) {
-                    collection.push(...this.toBytes(elem));
+                    collection.push(...this.toBytes(elem, settings)[0]);
                 }
                 inputUint8 = Uint8Array.from(collection);
             }
@@ -586,7 +586,7 @@ var BrowserSHAObj = (function () {
                 if (charset.size === setLen) {
                     charset = [...charset].join("");
                     this.root.charsets[name] = charset;
-                    console.log(`New charset added with the name '${name}' added and ready to use`);
+                    console.info(`New charset '${name}' was added and is ready to use`);
                 } else if (inputLen === setLen) {
                     throw new Error("There were repetitive chars found in your charset. Make sure each char is unique.");
                 } else {
@@ -596,7 +596,7 @@ var BrowserSHAObj = (function () {
 
             // Save method (argument gets validated) to 
             // change the default version.
-            this.root.setDefaultVersion = (version) => {
+            this.root.setDefaultCharset = (version) => {
                 ({version } = this.validateArgs([version]));
                 this.root.version = version;
             };
@@ -1272,7 +1272,7 @@ var BrowserSHAObj = (function () {
     /**
      * [BaseEx|Base1 Converter]{@link https://github.com/UmamiAppearance/BaseExJS/blob/main/src/converters/base-1.js}
      *
-     * @version 0.4.0
+     * @version 0.4.2
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
@@ -1299,7 +1299,7 @@ var BrowserSHAObj = (function () {
             // it is not suitable for this converter.
             delete this.addCharset;
 
-            // All chars in the sting are used and picked randomly (prob. suitable for obfuscation)
+            // All chars in the string are used and picked randomly (prob. suitable for obfuscation)
             this.charsets.all = " !\"#$%&'()*+,./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
             
             // The sequence is used from left to right again and again
@@ -1431,7 +1431,7 @@ var BrowserSHAObj = (function () {
     /**
      * [BaseEx|Base16 Converter]{@link https://github.com/UmamiAppearance/BaseExJS/src/converters/base-16.js}
      *
-     * @version 0.4.0
+     * @version 0.4.2
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
@@ -1510,7 +1510,7 @@ var BrowserSHAObj = (function () {
     /**
      * [BaseEx|Base32 Converter]{@link https://github.com/UmamiAppearance/BaseExJS/blob/main/src/converters/base-32.js}
      *
-     * @version 0.4.0
+     * @version 0.4.2
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
@@ -1609,7 +1609,7 @@ var BrowserSHAObj = (function () {
     /**
      * [BaseEx|Base58 Converter]{@link https://github.com/UmamiAppearance/BaseExJS/blob/main/src/converters/base-58.js}
      *
-     * @version 0.4.0
+     * @version 0.4.2
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
@@ -1747,7 +1747,7 @@ var BrowserSHAObj = (function () {
     /**
      * [BaseEx|Base64 Converter]{@link https://github.com/UmamiAppearance/BaseExJS/blob/main/src/converters/base-64.js}
      *
-     * @version 0.4.0
+     * @version 0.4.2
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
@@ -1834,7 +1834,7 @@ var BrowserSHAObj = (function () {
     /**
      * [BaseEx|Base85 Converter]{@link https://github.com/UmamiAppearance/BaseExJS/blob/main/src/converters/base-85.js}
      *
-     * @version 0.4.0
+     * @version 0.4.2
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
@@ -1963,7 +1963,7 @@ var BrowserSHAObj = (function () {
     /**
      * [BaseEx|Base91 Converter]{@link https://github.com/UmamiAppearance/BaseExJS/blob/main/src/converters/base-91.js}
      *
-     * @version 0.4.0
+     * @version 0.4.2
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0 AND BSD-3-Clause (Base91, Copyright (c) 2000-2006 Joachim Henke)
      */
@@ -2172,7 +2172,7 @@ var BrowserSHAObj = (function () {
     /**
      * [BaseEx|Byte Converter]{@link https://github.com/UmamiAppearance/BaseExJS/blob/main/src/converters/byte-converter.js}
      *
-     * @version 0.4.0
+     * @version 0.4.2
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
@@ -2282,7 +2282,7 @@ var BrowserSHAObj = (function () {
     /**
      * [BaseEx|LEB128 Converter]{@link https://github.com/UmamiAppearance/BaseExJS/blob/main/src/converters/leb-128.js}
      *
-     * @version 0.4.0
+     * @version 0.4.2
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
@@ -2443,6 +2443,14 @@ var BrowserSHAObj = (function () {
         }
     }
 
+    /**
+     * [BaseEx|SimpleBase Converter]{@link https://github.com/UmamiAppearance/BaseExJS/blob/main/src/converters/leb-128.js}
+     *
+     * @version 0.4.2
+     * @author UmamiAppearance [mail@umamiappearance.eu]
+     * @license GPL-3.0
+     */
+
     class SimpleBase extends BaseTemplate {
         constructor(radix, ...args) {
             super();
@@ -2451,14 +2459,14 @@ var BrowserSHAObj = (function () {
                 throw new RangeError("Radix argument must be provided and has to be an integer between 2 and 36.")
             }
 
-            this.charsets.selection = "0123456789abcdefghijklmnopqrstuvwxyz".substring(0, radix);
+            this.charsets.default = "0123456789abcdefghijklmnopqrstuvwxyz".substring(0, radix);
         
             // predefined settings
             this.converter = new BaseConverter(radix, 0, 0);
             this.hasSignedMode = true;
             this.littleEndian = !(radix === 2 || radix === 16);
             this.signed = true;
-            this.version = "selection";
+            this.version = "default";
             
             // list of allowed/disallowed args to change
             this.isMutable.littleEndian = true,
@@ -2496,10 +2504,10 @@ var BrowserSHAObj = (function () {
         }
     }
 
-    /*
+    /**
      * [BaseEx]{@link https://github.com/UmamiAppearance/BaseExJS}
      *
-     * @version 0.4.0
+     * @version 0.4.2
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0 AND BSD-3-Clause (only regarding Base91, Copyright (c) 2000-2006 Joachim Henke)
      */
@@ -2540,8 +2548,8 @@ var BrowserSHAObj = (function () {
             this.base58_flickr = new Base58("flickr", outputType);
             this.base64 = new Base64("default", outputType);
             this.base64_urlsafe = new Base64("urlsafe", outputType);
-            this.base85adobe = new Base85("adobe", outputType);
-            this.base85ascii = new Base85("ascii85", outputType);
+            this.base85_adobe = new Base85("adobe", outputType);
+            this.base85_ascii = new Base85("ascii85", outputType);
             this.base85_z85 = new Base85("z85", outputType);
             this.base91 = new Base91("default",outputType);
             this.leb128 = new LEB128("default", outputType);
@@ -2557,7 +2565,7 @@ var BrowserSHAObj = (function () {
     /*
      * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
      *
-     * @version 0.2.3
+     * @version 0.2.4
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */

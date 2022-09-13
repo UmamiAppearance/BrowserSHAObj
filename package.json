@@ -1,6 +1,6 @@
 {
   "name": "browser-sha-obj",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "JavaScript implementation of SHA (1/256/384/512) checksum calculation for the browser.",
   "browser": "./dist/BrowserSHAObj.esm.js",
   "type": "module",
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/UmamiAppearance/BrowserSHAObj#readme",
   "devDependencies": {
-    "base-ex": "^0.4.0",
+    "base-ex": "^0.4.2",
     "eslint": "^8.23.1",
     "http-server": "^14.1.1",
     "no-bro-cote": "^0.2.2",
