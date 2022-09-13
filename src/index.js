@@ -1,12 +1,12 @@
 /*
  * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
  *
- * @version 0.2.1
+ * @version 0.2.2
  * @author UmamiAppearance [mail@umamiappearance.eu]
  * @license GPL-3.0
  */
 
-import { BaseEx } from "../../node_modules/base-ex/src/base-ex.js";
+import { BaseEx } from "../node_modules/base-ex/src/base-ex.js";
 
 const ALGORITHMS = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"];
 const BASE_EX = new BaseEx();
