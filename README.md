@@ -39,10 +39,17 @@ BrowserSHAObj is a ESM module and exported as _default_. Importing works as foll
 ```js
 // esm
 import SHAObj from "./path/BrowserSHAObj.esm.min.js";
+
+// esm from CDN (jsdelivr)
+import SHAObj from "https://cdn.jsdelivr.net/npm/browser-sha-obj@latest/dist/BrowserSHAObj.esm.min.js"
 ```
+
 ```html
 <!-- script tag -->
-<script src="path/BrowserSHAObj.iife.min.js"></script>
+<script src="./path/BrowserSHAObj.iife.min.js"></script>
+
+<!-- script tag from CDN (jsdelivr)-->
+<script src="https://cdn.jsdelivr.net/npm/browser-sha-obj@latest/dist/BrowserSHAObj.iife.min.js"></script>
 ```
 
 ### Creating an instance    
