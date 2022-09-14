@@ -2565,7 +2565,7 @@ var BrowserSHAObj = (function () {
     /*
      * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
      *
-     * @version 0.2.4
+     * @version 0.2.5
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
