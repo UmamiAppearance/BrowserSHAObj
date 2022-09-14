@@ -42,7 +42,9 @@ export default class BrowserSHAObj {
         this.#algorithm = `SHA-${this.#bits}`;
 
         // convert sha1 to its actual 160 bits
-        this.#bits = Math.min(160, this.#bits);
+        if (this.#bits === 1) {
+            this.#bits = 160;
+        }
 
         if (!algorithms.has(this.#algorithm)) {
             throw new TypeError(`Available algorithms are: '${ALGORITHMS.join(", ")}'.`);
