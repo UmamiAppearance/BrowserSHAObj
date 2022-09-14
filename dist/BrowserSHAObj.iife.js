@@ -2565,7 +2565,7 @@ var BrowserSHAObj = (function () {
     /*
      * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
      *
-     * @version 0.2.5
+     * @version 0.2.6
      * @author UmamiAppearance [mail@umamiappearance.eu]
      * @license GPL-3.0
      */
@@ -2598,7 +2598,7 @@ var BrowserSHAObj = (function () {
 
             const algorithms = this.constructor.algorithmsAvailable();
             
-            this.#bits = String(algorithm).match(/[0-9]+/)[0]|0;
+            this.#bits = [].concat(String(algorithm).match(/[0-9]+/)).at(0)|0;
             this.blockSize = this.#bits > 256 ? 128 : 64;
             this.#algorithm = `SHA-${this.#bits}`;
 
@@ -2642,7 +2642,7 @@ var BrowserSHAObj = (function () {
          * @returns {Object} - A SHAObj instance.
          */
         static async new(algorithm="SHA-256", input=null) {
-            const shaObj = new BrowserSHAObj(algorithm);
+            const shaObj = new this(algorithm);
             if (input !== null) {
                 await shaObj.update(input);
             }
@@ -2679,7 +2679,7 @@ var BrowserSHAObj = (function () {
                 ? Uint8Array.from(this.#input)
                 : null;
 
-            return BrowserSHAObj.new(this.#algorithm, input);
+            return this.constructor.new(this.#algorithm, input);
         }
 
 

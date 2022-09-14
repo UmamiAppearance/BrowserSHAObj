@@ -1,7 +1,7 @@
 /*
  * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
  *
- * @version 0.2.5
+ * @version 0.2.6
  * @author UmamiAppearance [mail@umamiappearance.eu]
  * @license GPL-3.0
  */
@@ -21,7 +21,7 @@ const BASE_EX = new BaseEx();
  * different digest methods.
  * see: https://docs.python.org/3/library/hashlib.html
  */
-class BrowserSHAObj {
+export default class BrowserSHAObj {
 
     #algorithm = null;
     #bits = null;
@@ -80,7 +80,7 @@ class BrowserSHAObj {
      * @returns {Object} - A SHAObj instance.
      */
     static async new(algorithm="SHA-256", input=null) {
-        const shaObj = new BrowserSHAObj(algorithm);
+        const shaObj = new this(algorithm);
         if (input !== null) {
             await shaObj.update(input);
         }
@@ -117,7 +117,7 @@ class BrowserSHAObj {
             ? Uint8Array.from(this.#input)
             : null;
 
-        return BrowserSHAObj.new(this.#algorithm, input);
+        return this.constructor.new(this.#algorithm, input);
     }
 
 
@@ -234,5 +234,3 @@ class BrowserSHAObj {
             : null;
     }
 }
-
-export default BrowserSHAObj;
