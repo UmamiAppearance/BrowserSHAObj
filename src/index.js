@@ -19,7 +19,8 @@ const BASE_EX = new BaseEx();
  * It provides an easy access to the browsers Crypto.subtle
  * method, and also makes it possible to get multiple
  * different digest methods.
- * see: https://docs.python.org/3/library/hashlib.html
+ * 
+ * @see: https://docs.python.org/3/library/hashlib.html
  */
 export default class BrowserSHAObj {
 
