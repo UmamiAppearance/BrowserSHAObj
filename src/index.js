@@ -36,7 +36,7 @@ class BrowserSHAObj {
 
         const algorithms = this.constructor.algorithmsAvailable();
         
-        this.#bits = String(algorithm).match(/[0-9]+/)[0]|0;
+        this.#bits = [].concat(String(algorithm).match(/[0-9]+/)).at(0)|0;
         this.blockSize = this.#bits > 256 ? 128 : 64;
         this.#algorithm = `SHA-${this.#bits}`;
 
