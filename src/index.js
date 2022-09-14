@@ -39,7 +39,6 @@ export default class BrowserSHAObj {
         const algorithms = this.constructor.algorithmsAvailable();
         
         this.#bits = [].concat(String(algorithm).match(/[0-9]+/)).at(0)|0;
-        this.blockSize = this.#bits > 256 ? 128 : 64;
         this.#algorithm = `SHA-${this.#bits}`;
 
         // convert sha1 to its actual 160 bits
@@ -98,7 +97,7 @@ export default class BrowserSHAObj {
         return this.#bits / 8;
     }
 
-    
+
     /**
      * The internal block size of the hash algorithm in bytes.
      */
