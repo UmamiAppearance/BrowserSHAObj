@@ -2559,10 +2559,10 @@ class BaseEx {
     }
 }
 
-/*
+/**
  * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
  *
- * @version 0.2.6
+ * @version 0.2.7
  * @author UmamiAppearance [mail@umamiappearance.eu]
  * @license GPL-3.0
  */
@@ -2575,10 +2575,12 @@ const BASE_EX = new BaseEx();
  * Creates a SHA-(1-512) object for the browser.
  * It is very closely related to pythons hashlib
  * in its methods and features.
+ * 
  * It provides an easy access to the browsers Crypto.subtle
  * method, and also makes it possible to get multiple
  * different digest methods.
- * see: https://docs.python.org/3/library/hashlib.html
+ * 
+ * @see: https://docs.python.org/3/library/hashlib.html
  */
 class BrowserSHAObj {
 
@@ -2596,11 +2598,12 @@ class BrowserSHAObj {
         const algorithms = this.constructor.algorithmsAvailable();
         
         this.#bits = [].concat(String(algorithm).match(/[0-9]+/)).at(0)|0;
-        this.blockSize = this.#bits > 256 ? 128 : 64;
         this.#algorithm = `SHA-${this.#bits}`;
 
         // convert sha1 to its actual 160 bits
-        this.#bits = Math.min(160, this.#bits);
+        if (this.#bits === 1) {
+            this.#bits = 160;
+        }
 
         if (!algorithms.has(this.#algorithm)) {
             throw new TypeError(`Available algorithms are: '${ALGORITHMS.join(", ")}'.`);
@@ -2630,6 +2633,7 @@ class BrowserSHAObj {
         return this.constructor.algorithmsAvailable();
     }
 
+
     /**
      * Asynchronously creates a new instance.
      * Additionally an input can be provided, which 
@@ -2647,11 +2651,19 @@ class BrowserSHAObj {
     }
 
 
-    /***
+    /**
      * The size of the resulting hash in bytes.
      */
     get digestSize() {
         return this.#bits / 8;
+    }
+
+
+    /**
+     * The internal block size of the hash algorithm in bytes.
+     */
+    get blockSize() {
+        return this.#bits > 256 ? 128 : 64;
     }
 
 
@@ -2688,13 +2700,13 @@ class BrowserSHAObj {
      * shaObj.update(a); shaObj.update(b) is in many occasions
      * equivalent to shaObj.update(a+b).
      * 
-     * (Note: Rhe process is a concatenation of bytes. Take as
+     * (Note: The process is a concatenation of bytes. Take as
      * an exception for instance:
      * shaObj.update(1); shaObj.update(2) which is not the same
      * as shaObj.update(1+2))
      * 
      * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest.
-     * @param {*} replace - If true, the input is not concatenated with former input. 
+     * @param {boolean} replace - If true, the input is not concatenated with former input. 
      */
     async update(input, replace=false) {
         
