@@ -1,4 +1,4 @@
-/*
+/**
  * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
  *
  * @version 0.2.6
