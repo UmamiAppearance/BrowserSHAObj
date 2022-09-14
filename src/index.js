@@ -1,7 +1,7 @@
 /**
  * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
  *
- * @version 0.2.6
+ * @version 0.2.7
  * @author UmamiAppearance [mail@umamiappearance.eu]
  * @license GPL-3.0
  */
@@ -14,8 +14,8 @@ const BASE_EX = new BaseEx();
 
 /**
  * Creates a SHA-(1-512) object for the browser.
- * It is very closely related to pythons hmac library
- * in its methods and features but with many extras.
+ * It is very closely related to pythons hashlib
+ * in its methods and features.
  * 
  * It provides an easy access to the browsers Crypto.subtle
  * method, and also makes it possible to get multiple
@@ -141,13 +141,13 @@ export default class BrowserSHAObj {
      * shaObj.update(a); shaObj.update(b) is in many occasions
      * equivalent to shaObj.update(a+b).
      * 
-     * (Note: Rhe process is a concatenation of bytes. Take as
+     * (Note: The process is a concatenation of bytes. Take as
      * an exception for instance:
      * shaObj.update(1); shaObj.update(2) which is not the same
      * as shaObj.update(1+2))
      * 
      * @param {*} input - Input gets converted to bytes and processed by window.crypto.subtle.digest.
-     * @param {*} replace - If true, the input is not concatenated with former input. 
+     * @param {boolean} replace - If true, the input is not concatenated with former input. 
      */
     async update(input, replace=false) {
         
