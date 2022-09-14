@@ -14,8 +14,9 @@ const BASE_EX = new BaseEx();
 
 /**
  * Creates a SHA-(1-512) object for the browser.
- * It is very closely related to pythons hashlib
- * in its methods and features.
+ * It is very closely related to pythons hmac library
+ * in its methods and features but with many extras.
+ * 
  * It provides an easy access to the browsers Crypto.subtle
  * method, and also makes it possible to get multiple
  * different digest methods.
@@ -72,6 +73,7 @@ export default class BrowserSHAObj {
         return this.constructor.algorithmsAvailable();
     }
 
+
     /**
      * Asynchronously creates a new instance.
      * Additionally an input can be provided, which 
@@ -89,11 +91,19 @@ export default class BrowserSHAObj {
     }
 
 
-    /***
+    /**
      * The size of the resulting hash in bytes.
      */
     get digestSize() {
         return this.#bits / 8;
+    }
+
+    
+    /**
+     * The internal block size of the hash algorithm in bytes.
+     */
+    get blockSize() {
+        return this.#bits > 256 ? 128 : 64;
     }
 
 
