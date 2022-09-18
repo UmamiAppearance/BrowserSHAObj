@@ -130,7 +130,8 @@ Return the digest of the data passed to the [``update``](#updateinput-replacefal
 Like [``digest``](#digest) except the digest is returned as a string of double length, containing only hexadecimal digits. This may be used (as one of many options) to exchange the value safely in non-binary environments.
 
 ##### ``basedigest`` _(object)_
-Provides many different methods to covert the digest into different base representations. Take a look at the [live-examples](https://umamiappearance.github.io/BrowserSHAObj/examples/live-examples.html#base-representations), to see it in action.
+Provides many different methods to covert the digest into different base representations. Take a look at the [live-examples](https://umamiappearance.github.io/BrowserSHAObj/examples/live-examples.html#base-representations), to see it in action.  
+Every ``basedigest`` optionally takes additional [BaseEx Parameters](https://github.com/UmamiAppearance/BaseExJS#options).
 
 ##### ``copy()``
 Async method to return a copy/clone of the hash object. This can be used to efficiently compute the digests of data sharing a common initial substring.

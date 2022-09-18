@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { test } from "no-bro-cote";
 
-test.addImport("import BrowserSHAObj from './dist/BrowserSHAObj.esm.min.js';")
+test.addImport("import BrowserSHAObj from './dist/BrowserSHAObj.esm.min.js';");
 
 const INPUT = "Hello World!";
 
@@ -50,7 +50,7 @@ test.makeUnit(
     "2ef7bde608ce5404e97d5f042f95f89f1c232871",
     async () => {
         const shaObj = await BrowserSHAObj.new("SHA-1", "Hello");
-        await shaObj.update(" World!")
+        await shaObj.update(" World!");
         return shaObj.hexdigest();
     }
 );
