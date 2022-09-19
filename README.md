@@ -100,6 +100,8 @@ Added for the sake of completeness in terms of compatibility with [pythons hashl
 ##### ``BrowserSHAObj.new(algorithm, input)``
 Asynchronously creates a new instance. Optionally takes the ``algorithm`` as the first parameter, also an optional ``input`` which can be provided as the second parameter, and gets passed to the [``update``](#updateinput-replacefalse) method.
 
+##### ``BrowserSHAObj.baseEx``
+A [BaseEx Instance](https://github.com/UmamiAppearance/BaseExJS#available-converterscharsets) for the possibility to manually convert (byte) representations.
 
 #### Instance
 

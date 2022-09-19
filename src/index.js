@@ -1,7 +1,7 @@
 /**
  * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
  *
- * @version 0.3.0
+ * @version 0.3.1
  * @author UmamiAppearance [mail@umamiappearance.eu]
  * @license GPL-3.0
  */
@@ -9,6 +9,7 @@
 import { BaseEx } from "../node_modules/base-ex/src/base-ex.js";
 
 const ALGORITHMS = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"];
+const BASE_EX = new BaseEx();
  
 
 /**
@@ -49,9 +50,13 @@ export default class BrowserSHAObj {
             throw new TypeError(`Available algorithms are: '${ALGORITHMS.join(", ")}'.`);
         }
 
-        this.baseEx = new BaseEx();
         this.#addConverters();
     }
+
+    /**
+     * BaseEx instance.
+     */
+    static baseEx = BASE_EX;
 
 
     /**
@@ -156,7 +161,7 @@ export default class BrowserSHAObj {
         } else if (ArrayBuffer.isView(input)) {
             input = new Uint8Array(input.buffer);
         } else {
-            input = this.baseEx.byteConverter.encode(input, "uint8");
+            input = BASE_EX.byteConverter.encode(input, "uint8");
         }
 
         let finalInput;
@@ -217,10 +222,10 @@ export default class BrowserSHAObj {
         const capitalize = str => str.charAt(0).toUpperCase().concat(str.slice(1));
 
         this.hexdigest = () => this.#digest
-            ? this.baseEx.base16.encode(this.#digest)
+            ? BASE_EX.base16.encode(this.#digest)
             : null;
         
-        const converters = Object.keys(this.baseEx);
+        const converters = Object.keys(BASE_EX);
         this.basedigest = {
             toSimpleBase: {}
         };
@@ -231,18 +236,18 @@ export default class BrowserSHAObj {
 
         for (const converter of converters) {
             this.basedigest[`to${capitalize(converter)}`] = (...args) => this.#digest 
-                ? this.baseEx[converter].encode(this.#digest, ...args)
+                ? BASE_EX[converter].encode(this.#digest, ...args)
                 : null;
         }
 
-        for (const converter in this.baseEx.simpleBase) {
+        for (const converter in BASE_EX.simpleBase) {
             this.basedigest.toSimpleBase[capitalize(converter)] = (...args) => this.#digest
-                ? this.baseEx.simpleBase[converter].encode(this.#digest, ...args)
+                ? BASE_EX.simpleBase[converter].encode(this.#digest, ...args)
                 : null;
         }
 
         this.basedigest.toBytes = (...args) => this.#digest
-            ? this.baseEx.byteConverter.encode(this.#digest, ...args)
+            ? BASE_EX.byteConverter.encode(this.#digest, ...args)
             : null;
     }
 }
