@@ -64,25 +64,25 @@ There a two possible methods available to create an instance:
 #### new operator
 ```js
 // default, SHA-256
-const sha256 = new SHAObj();
+const sha256 = new BrowserSHAObj();
 
 // SHA-512
-const sha512 = new SHAObj("SHA-512");
+const sha512 = new BrowserSHAObj("SHA-512");
 ```
 
 #### new method
 ```js
 // default, SHA-256
-const sha256 = await SHAObj.new();
+const sha256 = await BrowserSHAObj.new();
 
 // SHA-512
-const sha512 = await SHAObj.new("SHA-512");
+const sha512 = await BrowserSHAObj.new("SHA-512");
 ```
 
 The method is asynchronous to allow you to associate a message in one go.
 ```js
 // SHA-512
-const sha512 = await SHAObj.new("SHA-512", "Hello World!");
+const sha512 = await BrowserSHAObj.new("SHA-512", "Hello World!");
 ```
 
 
