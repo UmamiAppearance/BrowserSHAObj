@@ -2562,7 +2562,7 @@ class BaseEx {
 /**
  * [BrowserSHAObj]{@link https://github.com/UmamiAppearance/BrowserSHAObj}
  *
- * @version 0.3.1
+ * @version 0.3.2
  * @author UmamiAppearance [mail@umamiappearance.eu]
  * @license GPL-3.0
  */
