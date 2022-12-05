@@ -34,7 +34,7 @@
   "homepage": "https://github.com/UmamiAppearance/BrowserSHAObj#readme",
   "devDependencies": {
     "@rollup/plugin-terser": "^0.1.0",
-    "base-ex": "^0.4.3",
+    "base-ex": "^0.5.1",
     "eslint": "^8.27.0",
     "http-server": "^14.1.1",
     "no-bro-cote": "^0.2.6",
