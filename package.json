@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/UmamiAppearance/BrowserSHAObj#readme",
   "devDependencies": {
-    "@rollup/plugin-terser": "^0.1.0",
+    "@rollup/plugin-terser": "^0.2.0",
     "base-ex": "^0.6.1",
     "eslint": "^8.29.0",
     "http-server": "^14.1.1",
